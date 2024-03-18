@@ -22,7 +22,7 @@ Here are some hints for you:
 
 | Epic | User Story | Description                                                                     | Priority | Is completed? |
 |------|------------|---------------------------------------------------------------------------------|----------|---------------|
-| EP01 | US01       | View the list of my to-do lists.                                                | 1        |               |
+| EP01 | US01       | View the list of my to-do lists.                                                | 1        |    -           |
 | EP01 | US02       | Add a new to-do list.                                                           | 1        |               |
 | EP01 | US03       | Delete a to-do list.                                                            | 1        |               |
 | EP01 | US04       | Edit a to-do list.                                                              | 1        |               |
