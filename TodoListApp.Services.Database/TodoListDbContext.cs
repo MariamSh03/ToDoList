@@ -7,5 +7,5 @@ public class TodoListDbContext : DbContext
     {
     }
 
-    public DbSet<TodoListEntity> TodoListEntities { get; set; }
+    public DbSet<TodoListEntity> TodoLists { get; set; }
 }

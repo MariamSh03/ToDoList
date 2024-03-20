@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TodoListApp.Services.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +9,9 @@ builder.Services.AddControllers();
 // Configure DbContext and specify the connection string
 builder.Services.AddDbContext<TodoListDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TodoListDbConnection")));
+
+// Configure TodoListDatabaseService as a service
+builder.Services.AddScoped<TodoListDatabaseService>();
 
 var app = builder.Build();
 
@@ -26,4 +28,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Correct placement of configuration block
 app.Run();
