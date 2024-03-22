@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using TodoListApp.Services.Database;
+using Microsoft.OpenApi.Models;
+using TodoListApp.Services.Database; // Make sure to import your namespace if it's different
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,13 +14,23 @@ builder.Services.AddDbContext<TodoListDbContext>(options =>
 // Configure TodoListDatabaseService as a service
 builder.Services.AddScoped<TodoListDatabaseService>();
 
+// Register Swagger services
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo List API", Version = "v1" });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    _ = app.UseDeveloperExceptionPage();
     _ = app.UseSwagger();
-    _ = app.UseSwaggerUI();
+    _ = app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo List API V1");
+    });
 }
 
 app.UseHttpsRedirection();
@@ -28,5 +39,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Correct placement of configuration block
 app.Run();

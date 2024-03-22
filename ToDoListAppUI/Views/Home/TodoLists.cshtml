@@ -1,0 +1,8 @@
+<h1>To-Do Lists</h1>
+
+<ul>
+    @foreach (var todoList in Model)
+    {
+        <li>@todoList.Title - @todoList.IsCompleted</li>
+    }
+</ul>

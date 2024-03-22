@@ -1,7 +1,19 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using TodoListApp.Services.WebApi;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient<TodoListWebApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://your-todolist-api-url.com/");
+    // Configure other HttpClient settings if needed
+});
 
 var app = builder.Build();
 

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using ToDoListAppUI.Models;
+using TodoListApp.WebApp.Models;
 using System.Diagnostics;
+using TodoListApp.WebApp.Models;
 
 namespace TodoListApp.WebApp.Controllers
 {
@@ -26,7 +27,7 @@ namespace TodoListApp.WebApp.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
     }
 }
