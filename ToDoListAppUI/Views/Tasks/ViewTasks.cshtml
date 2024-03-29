@@ -1,0 +1,24 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<ul>
+    @foreach (var task in Model.Tasks)
+    {
+        <li>
+            <strong>@task.Title</strong><br />
+            <span>Description: @task.Description</span><br />
+            <span>Due Date: @task.DueDate.ToShortDateString()</span><br />
+            <span>Status: @if (task.IsCompleted)
+                {
+                    <text>Completed</text>
+                }
+                else
+                {
+                    <text>Pending</text>
+                }</span><br />
+        </li>
+    }
+</ul>

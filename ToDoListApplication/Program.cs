@@ -18,6 +18,7 @@ builder.Services.AddScoped<TodoListDatabaseService>();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo List API", Version = "v1" });
+    c.CustomSchemaIds(type => type.FullName); // Use the full name of the type as schema ID
 });
 
 var app = builder.Build();
