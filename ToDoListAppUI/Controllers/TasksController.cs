@@ -25,10 +25,8 @@ namespace TodoListApp.WebApp.Controllers
                 return NotFound(); // Return 404 if the to-do list is not found
             }
 
-            // Retrieve the tasks for the specified to-do list
             var tasks = _taskService.GetTasksForTodoList(todoListId);
 
-            // Assign tasks to the TodoList.Tasks property
             todoList.Tasks = (List<Services.Task>?)tasks;
 
             return View(todoList); // Pass the modified TodoList object to the view

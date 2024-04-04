@@ -1,9 +1,9 @@
 namespace TodoListApp.Services;
 public interface ITodoListService
 {
-    IEnumerable<TodoList> GetTodoLists();
-    TodoList GetTodoListById(int todoListId);
-    void AddTodoList(TodoList todoList);
-    void UpdateTodoList(TodoList todoList);
-    void DeleteTodoList(int todoListId);
+    public IEnumerable<TodoList> GetTodoLists();
+    public TodoList GetTodoListById(int todoListId);
+    public void AddTodoList(TodoList todoList);
+    public void UpdateTodoList(TodoList todoList);
+    public void DeleteTodoList(int todoListId);
 }

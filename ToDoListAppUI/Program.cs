@@ -1,18 +1,24 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TodoListApp.Services.WebApi;
+using TodoListApp.WebApp.Data;
+using TodoListApp.WebApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDbContext<UsersDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UsersDbConnection")));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<UsersDbContext>() // Use the UsersDbContext for identity
+    .AddDefaultTokenProviders();
+
 builder.Services.AddHttpClient<TodoListWebApiService>(client =>
 {
-    client.BaseAddress = new Uri("https://your-todolist-api-url.com/");
-    // Configure other HttpClient settings if needed
+    client.BaseAddress = new Uri("https://localhost:7192"); // Replace with your actual base address
 });
 
 var app = builder.Build();

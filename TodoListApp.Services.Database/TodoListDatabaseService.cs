@@ -25,15 +25,15 @@ public class TodoListDatabaseService : ITodoListService
             Description = todoList.Description,
             Tasks = todoList.Tasks.Select(task => new TaskEntity
             {
-                // Map properties from Task to TaskEntity
+                Id = task.Id,
                 Title = task.Title,
                 Description = task.Description,
                 CreationDate = task.CreationDate,
                 DueDate = task.DueDate,
-                Status = (Database.TaskStatus)task.Status,
+                Status = task.Status,
                 Assignee = task.Assignee,
                 Tags = task.Tags,
-                Comments = task.Comments
+                Comments = task.Comments,
             }).ToList()
         };
 
@@ -67,59 +67,52 @@ public class TodoListDatabaseService : ITodoListService
         existingTodoList.Description = updatedTodoList.Description;
         existingTodoList.Tasks = updatedTodoList.Tasks.Select(task => new TaskEntity
         {
-            // Map properties from Task to TaskEntity
             Title = task.Title,
             Description = task.Description,
             CreationDate = task.CreationDate,
             DueDate = task.DueDate,
-            Status = (Database.TaskStatus)task.Status,
+            Status = task.Status,
             Assignee = task.Assignee,
             Tags = task.Tags,
             Comments = task.Comments
         }).ToList();
-        // Update other properties as needed
 
         _ = this.dbContext_.SaveChanges();
     }
 
-    IEnumerable<TodoList> ITodoListService.GetTodoLists()
+    public TodoList GetTodoListById(int todoListId)
     {
-        var todoListEntities = this.dbContext_.TodoLists.ToList();
-        var todoLists = todoListEntities.Select(entity => new TodoList
+        var todoListEntity = this.dbContext_.TodoLists.Include(t => t.Tasks).ToList().FirstOrDefault(t => t.Id == todoListId);
+
+        if (todoListEntity == null)
         {
-            Id = entity.Id,
-            Title = entity.Title,
-            Description = entity.Description
-            // Map other properties as needed
-        }).ToList();
-
-        return todoLists;
-    }
-
-    TodoList ITodoListService.GetTodoListById(int todoListId)
-    {
-        throw new NotImplementedException();
-    }
-
-    void ITodoListService.AddTodoList(TodoList todoList)
-    {
-        if (todoList == null)
-        {
-            throw new ArgumentNullException(nameof(todoList));
+            throw new ArgumentException($"Todo list with ID {todoListId} not found");
         }
 
-        var newTodoListEntity = new TodoListEntity
+
+        var todoList = new TodoList
         {
-            Title = todoList.Title,
-            Description = todoList.Description
-            // Map other properties as needed
+            Id = todoListEntity.Id,
+            Title = todoListEntity.Title,
+            Description = todoListEntity.Description,
+            Tasks = todoListEntity.Tasks.Select(task => new Task
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                CreationDate = task.CreationDate,
+                DueDate = task.DueDate,
+                Status = task.Status,
+                Assignee = task.Assignee,
+                Tags = task.Tags,
+                Comments = task.Comments
+            }).ToList()
         };
 
-        _ = this.dbContext_.TodoLists.Add(newTodoListEntity);
-        _ = this.dbContext_.SaveChanges();
+        return todoList;
     }
 
-    void ITodoListService.UpdateTodoList(TodoList todoList)
+    public void UpdateTodoList(TodoList todoList)
     {
         var existingTodoList = this.dbContext_.TodoLists.Find(todoList.Id);
         if (existingTodoList == null)
@@ -130,19 +123,6 @@ public class TodoListDatabaseService : ITodoListService
         existingTodoList.Title = todoList.Title;
         existingTodoList.Description = todoList.Description;
 
-        _ = this.dbContext_.SaveChanges();
-    }
-
-    void ITodoListService.DeleteTodoList(int todoListId)
-    {
-        var todoListEntity = this.dbContext_.TodoLists.Find(todoListId);
-
-        if (todoListEntity == null)
-        {
-            throw new ArgumentException($"Todo list with ID {todoListId} not found");
-        }
-
-        _ = this.dbContext_.TodoLists.Remove(todoListEntity);
         _ = this.dbContext_.SaveChanges();
     }
 
@@ -163,11 +143,105 @@ public class TodoListDatabaseService : ITodoListService
                 Tags = task.Tags,
                 Comments = task.Comments,
                 DueDate = task.DueDate,
-                Status = (Services.TaskStatus)task.Status,
+                Status = task.Status,
             }
                 ).ToList()
         }).ToList();
 
         return todoLists;
+    }
+
+    public void DeleteTask(int todoListId, int taskId)
+    {
+        // Find the todo list by ID
+        var todoListEntity = this.dbContext_.TodoLists
+            .Include(t => t.Tasks)
+            .FirstOrDefault(t => t.Id == todoListId);
+
+        if (todoListEntity == null)
+        {
+            throw new ArgumentException($"Todo list with ID {todoListId} not found");
+        }
+
+        // Find the task within the todo list
+        var taskEntity = todoListEntity.Tasks.FirstOrDefault(task => task.Id == taskId);
+
+        if (taskEntity == null)
+        {
+            throw new ArgumentException($"Task with ID {taskId} not found in todo list with ID {todoListId}");
+        }
+
+        // Remove the task from the todo list
+        todoListEntity.Tasks.Remove(taskEntity);
+
+        // Save changes to the database
+        _ = this.dbContext_.SaveChanges();
+    }
+
+    public void AddTask(int todoListId, Task task)
+    {
+        // Find the todo list by ID
+        var todoListEntity = this.dbContext_.TodoLists
+            .Include(t => t.Tasks)
+            .FirstOrDefault(t => t.Id == todoListId);
+
+        if (todoListEntity == null)
+        {
+            throw new ArgumentException($"Todo list with ID {todoListId} not found");
+        }
+
+        // Create a new task entity
+        var newTaskEntity = new TaskEntity
+        {
+            Title = task.Title,
+            Description = task.Description,
+            CreationDate = task.CreationDate,
+            DueDate = task.DueDate,
+            Status = task.Status,
+            Assignee = task.Assignee,
+            Tags = task.Tags,
+            Comments = task.Comments
+        };
+
+        // Add the task entity to the todo list
+        todoListEntity.Tasks ??= new List<TaskEntity>(); // Ensure Tasks collection is initialized
+        todoListEntity.Tasks.Add(newTaskEntity);
+
+        // Save changes to the database
+        _ = this.dbContext_.SaveChanges();
+    }
+
+    public void EditTask(int todoListId, Task task)
+    {
+        // Find the todo list by ID
+        var todoListEntity = this.dbContext_.TodoLists
+            .Include(t => t.Tasks)
+            .FirstOrDefault(t => t.Id == todoListId);
+
+        if (todoListEntity == null)
+        {
+            throw new ArgumentException($"Todo list with ID {todoListId} not found");
+        }
+
+        // Find the task within the todo list
+        var taskEntity = todoListEntity.Tasks.FirstOrDefault(t => t.Id == task.Id);
+
+        if (taskEntity == null)
+        {
+            throw new ArgumentException($"Task with ID {task.Id} not found in todo list with ID {todoListId}");
+        }
+
+        // Update the task properties
+        taskEntity.Title = task.Title;
+        taskEntity.Description = task.Description;
+        taskEntity.CreationDate = task.CreationDate;
+        taskEntity.DueDate = task.DueDate;
+        taskEntity.Status = task.Status;
+        taskEntity.Assignee = task.Assignee;
+        taskEntity.Tags = task.Tags;
+        taskEntity.Comments = task.Comments;
+
+        // Save changes to the database
+        _ = this.dbContext_.SaveChanges();
     }
 }

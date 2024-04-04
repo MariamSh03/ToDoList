@@ -21,12 +21,10 @@ namespace TodoListApp.Services.WebApi
             throw new NotImplementedException();
         }
 
-        // Implement methods defined in the ITodoListService interface
 
         public IEnumerable<TodoList> GetTodoLists()
         {
-            // Your implementation here
-            return null; // Replace null with your actual implementation
+            return null;
         }
 
         public void UpdateTodoList(int todoListId, TodoList updatedTodoList)
@@ -38,7 +36,5 @@ namespace TodoListApp.Services.WebApi
         {
             throw new NotImplementedException();
         }
-
-        // Implement other methods...
     }
 }

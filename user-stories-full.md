@@ -4,15 +4,15 @@
 
 | Epic | User Story | Description                                                                     | Priority | Is completed? |
 |------|------------|---------------------------------------------------------------------------------|----------|---------------|
-| EP1  | US01       | View the list of my to-do lists.                                                | 1        |               |
-| EP1  | US02       | Add a new to-do list.                                                           | 1        |               |
-| EP1  | US03       | Delete a to-do list.                                                            | 1        |               |
-| EP1  | US04       | Edit a to-do list.                                                              | 1        |               |
-| EP2  | US05       | View the list of tasks in a to-do list.                                         | 1        |               |
-| EP2  | US06       | View the task details page.                                                     | 1        |               |
-| EP2  | US07       | Add a new to-do task.                                                           | 1        |               |
-| EP2  | US08       | Delete a to-do task.                                                            | 1        |               |
-| EP2  | US09       | Edit a to-do task.                                                              | 1        |               |
+| EP1  | US01       | View the list of my to-do lists.                                                | 1        |       +       |
+| EP1  | US02       | Add a new to-do list.                                                           | 1        |        +      |
+| EP1  | US03       | Delete a to-do list.                                                            | 1        |        +      |
+| EP1  | US04       | Edit a to-do list.                                                              | 1        |       +        |
+| EP2  | US05       | View the list of tasks in a to-do list.                                         | 1        |       +        |
+| EP2  | US06       | View the task details page.                                                     | 1        |        +      |
+| EP2  | US07       | Add a new to-do task.                                                           | 1        |        +    |
+| EP2  | US08       | Delete a to-do task.                                                            | 1        |        +       |
+| EP2  | US09       | Edit a to-do task.                                                              | 1        |        +       |
 | EP2  | US10       | Highlight tasks that are overdue.                                               | 1        |               |
 | EP3  | US11       | View the list of tasks assigned to me.                                          | 2        |               |
 | EP3  | US12       | Filter tasks in my assigned task list.                                          | 5        |               |
