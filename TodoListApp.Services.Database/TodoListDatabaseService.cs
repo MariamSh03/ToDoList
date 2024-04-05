@@ -62,7 +62,6 @@ public class TodoListDatabaseService : ITodoListService
             throw new ArgumentException($"Todo list with ID {todoListId} not found");
         }
 
-        // Update the properties of the existing to-do list
         existingTodoList.Title = updatedTodoList.Title;
         existingTodoList.Description = updatedTodoList.Description;
         existingTodoList.Tasks = updatedTodoList.Tasks.Select(task => new TaskEntity
@@ -144,6 +143,7 @@ public class TodoListDatabaseService : ITodoListService
                 Comments = task.Comments,
                 DueDate = task.DueDate,
                 Status = task.Status,
+                Assignee = task.Assignee,
             }
                 ).ToList()
         }).ToList();

@@ -17,7 +17,6 @@ namespace TodoListApp.WebApp.Controllers
         // Action method to view tasks for a specific to-do list
         public IActionResult Index(int todoListId)
         {
-            // Retrieve the to-do list with the specified ID
             var todoList = _todoListService.GetTodoListById(todoListId);
 
             if (todoList == null)

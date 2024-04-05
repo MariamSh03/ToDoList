@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using TodoListApp.Services;
 
 namespace TodoListApp.WebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TodoListController : ControllerBase
+    public class TodoListController : Controller
     {
         private readonly ITodoListService todoListService;
 
@@ -15,6 +14,11 @@ namespace TodoListApp.WebApp.Controllers
             this.todoListService = todoListService;
         }
 
-        // Define controller actions here...
+        public IActionResult Index()
+        {
+            var todoLists = todoListService.GetTodoLists();
+            return this.View(todoLists);
+        }
+
     }
 }

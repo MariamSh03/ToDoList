@@ -89,8 +89,8 @@ The developer's checklist for week 1:
 - [+] T03: Implement Epic 1 backend functionality in the *TodoList.WebApi* application.
 - [+] T05: Implement Epic 2 backend functionality in the *TodoList.WebApi* application.
 - [ ] T07: Implement Epic 3 backend functionality in the *TodoList.WebApi* application.
-- [ ] All changes are committed and pushed to the remote repository.
-- [ ] There are no major or critical issues or blockers found during building the solution.
+- [+] All changes are committed and pushed to the remote repository.
+- [+] There are no major or critical issues or blockers found during building the solution.
 
 
 ### Week 2
