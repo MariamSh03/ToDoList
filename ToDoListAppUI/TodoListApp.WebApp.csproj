@@ -24,7 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TodoListApp.Services.WebApi\TodoListApp.Services.WebApi.csproj" />
     <ProjectReference Include="..\TodoListApp.Services\TodoListApp.Services.csproj" />
-    <ProjectReference Include="..\TodoListApp.WebApi.Models\TodoListApp.WebApi.Models.csproj" />
   </ItemGroup>
 
 </Project>

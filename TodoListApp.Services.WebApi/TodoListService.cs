@@ -6,35 +6,36 @@ namespace TodoListApp.Services.WebApi
 {
     public class TodoListService : ITodoListService
     {
+        private readonly ITodoListService _todoListWebApiService;
+
+        public TodoListService(ITodoListService todoListWebApiService)
+        {
+            _todoListWebApiService = todoListWebApiService;
+        }
+
+        public IEnumerable<TodoList> GetTodoLists()
+        {
+            return _todoListWebApiService.GetTodoLists();
+        }
+
         public void AddTodoList(TodoList todoList)
         {
-            throw new NotImplementedException();
+            _todoListWebApiService.AddTodoList(todoList);
         }
 
         public void DeleteTodoList(int todoListId)
         {
-            throw new NotImplementedException();
-        }
-
-        public TodoList GetTodoListById(int todoListId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public IEnumerable<TodoList> GetTodoLists()
-        {
-            return null;
-        }
-
-        public void UpdateTodoList(int todoListId, TodoList updatedTodoList)
-        {
-            throw new NotImplementedException();
+            _todoListWebApiService.DeleteTodoList(todoListId);
         }
 
         public void UpdateTodoList(TodoList todoList)
         {
-            throw new NotImplementedException();
+            _todoListWebApiService.UpdateTodoList(todoList);
+        }
+
+        public TodoList GetTodoListById(int todoListId)
+        {
+            return _todoListWebApiService.GetTodoListById(todoListId);
         }
     }
 }

@@ -14,23 +14,21 @@ namespace TodoListApp.WebApp.Controllers
             _taskService = taskService;
         }
 
-        // Action method to view tasks for a specific to-do list
         public IActionResult Index(int todoListId)
         {
             var todoList = _todoListService.GetTodoListById(todoListId);
 
             if (todoList == null)
             {
-                return NotFound(); // Return 404 if the to-do list is not found
+                return NotFound();
             }
 
             var tasks = _taskService.GetTasksForTodoList(todoListId);
 
             todoList.Tasks = (List<Services.Task>?)tasks;
 
-            return View(todoList); // Pass the modified TodoList object to the view
+            return View(todoList);
         }
 
-        // Other action methods for adding, editing, or deleting tasks can be added here
     }
 }

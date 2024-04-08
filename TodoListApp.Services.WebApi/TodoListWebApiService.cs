@@ -1,55 +1,62 @@
-using System;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using TodoListApp.WebApi.Models;
+using System.Net.Http.Headers;
+using System.Text;
+using Newtonsoft.Json;
+
 
 namespace TodoListApp.Services.WebApi
 {
-    public class TodoListWebApiService : ITodoListService
+    public class TodoListWebApiService : ITodoListWebApiService
     {
         private readonly HttpClient _httpClient;
+        private const string BaseUrl = "https://localhost:7093";
 
         public TodoListWebApiService(HttpClient httpClient)
         {
-            _httpClient = httpClient;
+            this._httpClient = httpClient;
+            this._httpClient.BaseAddress = new Uri(BaseUrl);
+            this._httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public void AddTodoList(TodoList todoList)
+        public async Task<IEnumerable<TodoList>> GetTodoLists()
         {
-            throw new NotImplementedException();
+            var response = await this._httpClient.GetAsync(BaseUrl + "/TodoList");
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Failed to get todo lists. Status code: {response.StatusCode}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<IEnumerable<TodoList>>(content);
         }
 
-        public void DeleteTodoList(int todoListId)
+        public async System.Threading.Tasks.Task AddTodoList(TodoList todoList)
         {
-            throw new NotImplementedException();
-        }
-
-        public TodoList GetTodoListById(int todoListId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TodoList> GetTodoLists()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<TodoListModel[]> GetTodoListsAsync()
-        {
-            // Make a GET request to the API endpoint to retrieve the list of to-do lists
-            var response = await _httpClient.GetAsync("api/todolist");
-
-            // Ensure the request was successful
+            var json = JsonConvert.SerializeObject(todoList);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("/TodoList", content);
             response.EnsureSuccessStatusCode();
-
-            // Deserialize the JSON response to TodoListModel array
-            return await response.Content.ReadFromJsonAsync<TodoListModel[]>();
         }
 
-        public void UpdateTodoList(TodoList todoList)
+        public async System.Threading.Tasks.Task DeleteTodoList(int todoListId)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"/TodoList/{todoListId}");
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async System.Threading.Tasks.Task UpdateTodoList(TodoList todoList)
+        {
+            var json = JsonConvert.SerializeObject(todoList);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync($"/TodoList/{todoList.Id}", content);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<TodoList> GetTodoListById(int todoListId)
+        {
+            var response = await _httpClient.GetAsync($"/TodoList/{todoListId}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<TodoList>(content);
         }
     }
 }

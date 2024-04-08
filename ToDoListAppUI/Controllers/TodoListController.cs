@@ -1,24 +1,41 @@
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TodoListApp.Services;
+using TodoListApp.WebApi.Models;
 
-namespace TodoListApp.WebApp.Controllers
+public class TodoListController : Controller
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class TodoListController : Controller
+    private readonly ITodoListService _todoListService;
+
+    public TodoListController(ITodoListService todoListService)
     {
-        private readonly ITodoListService todoListService;
+        _todoListService = todoListService;
+    }
 
-        public TodoListController(ITodoListService todoListService)
+    public async Task<IActionResult> Index()
+    {
+        var todoLists = this._todoListService.GetTodoLists();
+
+        var todoListModels = todoLists.Select(todo => new TodoListModel
         {
-            this.todoListService = todoListService;
-        }
+            Id = todo.Id,
+            Title = todo.Title,
+            Description = todo.Description,
+            Tasks = todo.Tasks.Select(task => new TaskModel
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                CreationDate = task.CreationDate,
+                Tags = task.Tags,
+                Comments = task.Comments,
+                DueDate = task.DueDate,
+                Status = (TodoListApp.WebApi.Models.TaskStatus)task.Status,
+                Assignee = task.Assignee,
+            }).ToList(),
+        });
 
-        public IActionResult Index()
-        {
-            var todoLists = todoListService.GetTodoLists();
-            return this.View(todoLists);
-        }
-
+        return View(todoListModels);
     }
 }

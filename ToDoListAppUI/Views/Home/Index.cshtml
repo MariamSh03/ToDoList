@@ -1,36 +1,10 @@
-@model IEnumerable<TodoListApp.WebApp.Models.TodoList>
-
-@{
-    ViewData["Title"] = "Todo Lists";
-}
+@model IEnumerable<TodoListApp.WebApi.Models.TodoListModel>
 
 <h1>Todo Lists</h1>
+<ul>
+    @foreach (var todoList in Model)
+    {
+        <Div>@todoList.Title</Div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null)
-        {
-            foreach (var todoList in Model)
-            {
-                <tr>
-                    <td>@todoList.Title</td>
-                    <td>@todoList.Description</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@todoList.Id">Details</a>
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
-            <p>No todo lists available.</p>
-        }
-    </tbody>
-</table>
+    }
+</ul>
