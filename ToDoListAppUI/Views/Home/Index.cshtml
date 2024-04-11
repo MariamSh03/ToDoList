@@ -4,7 +4,19 @@
 <ul>
     @foreach (var todoList in Model)
     {
-        <Div>@todoList.Title</Div>
-
+        <li>
+            <h2>@todoList.Title</h2>
+            <p>@todoList.Description</p>
+            <h3>Tasks:</h3>
+            <ul>
+                @foreach (var task in todoList.Tasks)
+                {
+                    <li>
+                        <strong>@task.Title</strong>
+                        <p>@task.Description</p>
+                    </li>
+                }
+            </ul>
+        </li>
     }
 </ul>
