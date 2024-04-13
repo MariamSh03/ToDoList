@@ -21,7 +21,6 @@ namespace TodoListApp.WebApi.Controllers
         {
             try
             {
-                // Retrieve the specific todo list
                 var todoList = _todoService.GetTodoListById(todoListId);
                 if (todoList == null)
                 {

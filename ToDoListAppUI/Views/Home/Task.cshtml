@@ -1,0 +1,20 @@
+@model IEnumerable<TodoListApp.WebApi.Models.TaskModel>
+<head>
+    <link rel="stylesheet" href="~/css/Task.css" />
+</head>
+
+<div "Task-container-big">
+
+    @foreach (var Task in Model)
+    {
+        <div class="Task-container">
+            <div class="prop">@Task.Title</div>
+            <div class="prop">@Task.Description</div>
+            <select Class="mySelect">
+                <option value="option1">In progress</option>
+                <option value="option2">Not started</option>
+                <option value="option3">Completed</option>
+            </select>
+        </div>
+    }
+</div>

@@ -163,8 +163,7 @@ h1 {
 
 .register-forget {
     margin: 1rem 0;
-    display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .opacity {

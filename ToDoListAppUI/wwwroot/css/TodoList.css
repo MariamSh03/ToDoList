@@ -1,0 +1,13 @@
+body {
+    background-color: #81c7f0;
+    font-family: "poppins";
+}
+
+.todo-list{
+    align-content: center;
+}
+
+.tasks {
+    list-style: none;
+    padding: 0;
+}

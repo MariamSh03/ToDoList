@@ -8,16 +8,34 @@ namespace TodoListApp.WebApp.Controllers
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
+        [HttpGet]
         public IActionResult Login()
+        {
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
         }
+
+
+        [HttpGet]
+        public IActionResult Error()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> LoginPost(string email, string password, bool rememberMe)
@@ -32,13 +50,35 @@ namespace TodoListApp.WebApp.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home"); // Redirect to the home page upon successful login
+                return this.RedirectToAction("Index", "Home");
             }
             else
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return View("Login"); // Return the login view with an error message
+                return this.View("Error");
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            return View(model);
         }
     }
 }

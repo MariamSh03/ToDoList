@@ -1,8 +1,15 @@
-<h1>To-Do Lists</h1>
+@model IEnumerable<TodoListApp.WebApi.Models.TodoListModel>
 
-<ul>
+<head>
+    <link rel="stylesheet" href="~/css/TodoList.css" />
+</head>
+
+<div class="todo-lists">
     @foreach (var todoList in Model)
     {
-        <li>@todoList.Title - @todoList.IsCompleted</li>
+        <div class="todo-list">
+            <h1> @todoList.Title </h1>
+            @Html.Partial("Task", todoList.Tasks)
+        </div>
     }
-</ul>
+</div>

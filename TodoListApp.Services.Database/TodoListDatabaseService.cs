@@ -43,15 +43,27 @@ public class TodoListDatabaseService : ITodoListService
 
     public void DeleteTodoList(int todoListId)
     {
-        var todoListEntity = this.dbContext_.TodoLists.Find(todoListId);
+        var todoListEntity = this.dbContext_.TodoLists
+            .Include(t => t.Tasks)
+            .SingleOrDefault(t => t.Id == todoListId);
 
         if (todoListEntity == null)
         {
             throw new ArgumentException($"Todo list with ID {todoListId} not found");
         }
 
-        _ = this.dbContext_.TodoLists.Remove(todoListEntity);
-        _ = this.dbContext_.SaveChanges();
+        // If there are associated tasks, remove them first
+        if (todoListEntity.Tasks != null)
+        {
+            foreach (var task in todoListEntity.Tasks.ToList())
+            {
+                dbContext_.Remove(task);
+            }
+        }
+
+        _ = dbContext_.Remove(todoListEntity);
+
+        _ = dbContext_.SaveChanges();
     }
 
     public void UpdateTodoList(int todoListId, TodoList updatedTodoList)

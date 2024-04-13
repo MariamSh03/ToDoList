@@ -21,6 +21,16 @@ namespace TodoListApp.WebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
+            return SignInPage();
+        }
+
+        public IActionResult Privacy()
+        {
+            return this.View();
+        }
+
+        public async Task<IActionResult> TodoLists()
+        {
             var todoLists = await _todoListWebApiService.GetTodoLists();
             var todoListsModel = todoLists.Select(todoList => new TodoListModel
             {
@@ -44,7 +54,7 @@ namespace TodoListApp.WebApp.Controllers
             return this.View(todoListsModel);
         }
 
-        public IActionResult Privacy()
+        public IActionResult SignInPage()
         {
             return this.View();
         }
