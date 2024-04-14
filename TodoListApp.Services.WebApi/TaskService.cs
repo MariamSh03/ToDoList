@@ -3,32 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoListApp.Services;
+using TodoListApp.WebApi.Models;
 
-namespace TodoListApp.Services.WebApi;
-public class TaskService : ITaskService
+namespace TodoListApp.Services.WebApi
 {
-    public void AddTaskToTodoList(int todoListId, Task task)
+    public class TaskService : ITaskService
     {
-        throw new NotImplementedException();
-    }
+        private readonly ITaskService _taskService;
 
-    public void DeleteTask(int taskId)
-    {
-        throw new NotImplementedException();
-    }
+        public TaskService(ITaskService taskService)
+        {
+            _taskService = taskService;
+        }
 
-    public Task GetTaskById(int taskId)
-    {
-        throw new NotImplementedException();
-    }
+        public void AddTaskToTodoList(int todoListId, Task task)
+        {
+            _taskService.AddTaskToTodoList(todoListId, task);
+        }
 
-    public IEnumerable<Task> GetTasksForTodoList(int todoListId)
-    {
-        throw new NotImplementedException();
-    }
+        public void DeleteTask(int taskId)
+        {
+            _taskService.DeleteTask(taskId);
+        }
 
-    public void UpdateTask(Task task)
-    {
-        throw new NotImplementedException();
+        public Task GetTaskById(int taskId)
+        {
+            return _taskService.GetTaskById(taskId);
+        }
+
+        public IEnumerable<Task> GetTasksForTodoList(int todoListId)
+        {
+            return _taskService.GetTasksForTodoList(todoListId);
+        }
+
+        public void UpdateTask(Task task)
+        {
+            _taskService.UpdateTask(task);
+        }
     }
 }

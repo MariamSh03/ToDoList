@@ -3,18 +3,39 @@
     <link rel="stylesheet" href="~/css/Task.css" />
 </head>
 
-<div "Task-container-big">
-
+<div class="Task-container-big">
     @foreach (var Task in Model)
     {
-        <div class="Task-container">
+        <div class="Task-container" style="@(Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed) ?
+                        "background-color: Green;" : (Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress) ?
+                            "background-color: Yellow;" :  ((Task.DueDate < DateTime.Today) ? "color: Red;" : "Background-color: White;")))">
             <div class="prop">@Task.Title</div>
             <div class="prop">@Task.Description</div>
-            <select Class="mySelect">
-                <option value="option1">In progress</option>
-                <option value="option2">Not started</option>
-                <option value="option3">Completed</option>
+            <div class="prop"> Due: @Task.DueDate.ToString("HH:mm")</div>
+            <div class="prop">
+            <select class="mySelect">
+                @if (Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress))
+                {
+                    <option value="option1" selected>In progress</option>
+                    <option value="option2">Not started</option>
+                    <option value="option3">Completed</option>
+                }
+                else if (Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.NotStarted))
+                {
+                    <option value="option1">In progress</option>
+                    <option value="option2" selected>Not started</option>
+                    <option value="option3">Completed</option>
+                }
+                else if (Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed))
+                {
+                    <option value="option1">In progress</option>
+                    <option value="option2">Not started</option>
+                    <option value="option3" selected>Completed</option>
+                }
             </select>
+        </div>
+            <div class="prop">  <button class="Delete"> Delete </button> </div>
+           
         </div>
     }
 </div>
