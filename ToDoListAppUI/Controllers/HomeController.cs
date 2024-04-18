@@ -12,11 +12,13 @@ namespace TodoListApp.WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ITodoListWebApiService _todoListWebApiService;
+        private readonly ITaskWebApiService _taskWebApiService;
 
-        public HomeController(ILogger<HomeController> logger, ITodoListWebApiService todoListService)
+        public HomeController(ILogger<HomeController> logger, ITodoListWebApiService todoListService, ITaskWebApiService taskWebApiService)
         {
             _logger = logger;
             _todoListWebApiService = todoListService;
+            _taskWebApiService = taskWebApiService;
         }
 
         public async Task<IActionResult> Index()
@@ -52,6 +54,11 @@ namespace TodoListApp.WebApp.Controllers
             }).ToList();
 
             return this.View(todoListsModel);
+        }
+
+        public IActionResult AddTask()
+        {
+            return View();
         }
 
         public IActionResult SignInPage()

@@ -16,8 +16,6 @@ body {
 .prop {
     flex: 1; 
     margin-top: 5px;
-    align-content: center;
-
 }
 
 .mySelect {
@@ -34,6 +32,34 @@ body {
     border-radius: 5px;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
     background: #e62222;
+    transition: 200ms;
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+}
+
+.Details {
+    width: 80px;
+    height: 50px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    background: #90D26D;
+    transition: 200ms;
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+}
+
+.edit {
+    width: 80px;
+    height: 50px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    background: #40A2D8;
     transition: 200ms;
     transform: translateX(35px);
     color: white;

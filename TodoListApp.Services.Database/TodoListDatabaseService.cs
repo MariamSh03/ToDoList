@@ -165,7 +165,7 @@ public class TodoListDatabaseService : ITodoListService
 
     public void DeleteTask(int todoListId, int taskId)
     {
-        // Find the todo list by ID
+
         var todoListEntity = this.dbContext_.TodoLists
             .Include(t => t.Tasks)
             .FirstOrDefault(t => t.Id == todoListId);

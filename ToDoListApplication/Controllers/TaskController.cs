@@ -47,7 +47,7 @@ namespace TodoListApp.WebApi.Controllers
             try
             {
                 _todoService.DeleteTask(todoListId, taskId);
-                return Ok();
+                return RedirectToAction("Home/TodoLists");
             }
             catch (ArgumentException ex)
             {

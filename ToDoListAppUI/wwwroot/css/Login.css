@@ -26,11 +26,6 @@ body {
     -o-transition: background 0.2s ease;
 }
 
-a {
-    text-decoration: none;
-    color: var(--color);
-}
-
 h1 {
     font-size: 2.5rem;
 }
@@ -85,7 +80,6 @@ h1 {
         animation: wobble 0.3s ease-in;
         -webkit-animation: wobble 0.3s ease-in;
     }
-
 .login-container form button {
     background-color: var(--primary-color);
     color: var(--color);

@@ -4,38 +4,53 @@
 </head>
 
 <div class="Task-container-big">
-    @foreach (var Task in Model)
+    @foreach (var task in Model)
     {
-        <div class="Task-container" style="@(Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed) ?
-                        "background-color: Green;" : (Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress) ?
-                            "background-color: Yellow;" :  ((Task.DueDate < DateTime.Today) ? "color: Red;" : "Background-color: White;")))">
-            <div class="prop">@Task.Title</div>
-            <div class="prop">@Task.Description</div>
-            <div class="prop"> Due: @Task.DueDate.ToString("HH:mm")</div>
+        <div class="Task-container" style="@(task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed) ?
+                        "background-color: 4CCD99;" : (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress) ?
+                            "background-color: FFF455;" :  ((task.DueDate < DateTime.Today) ? "Background-color: F2613F;" : "Background-color: White;")))">
+            @if (task.DueDate < DateTime.Today)
+            {
+                <div class="overdue-tag">Overdue</div>
+            }
+            <div class="prop">@task.Title</div>
+            <div class="prop">@task.Description</div>
+            <div class="prop"> Due: @task.DueDate.ToString("HH:mm")</div>
             <div class="prop">
-            <select class="mySelect">
-                @if (Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress))
-                {
-                    <option value="option1" selected>In progress</option>
-                    <option value="option2">Not started</option>
-                    <option value="option3">Completed</option>
-                }
-                else if (Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.NotStarted))
-                {
-                    <option value="option1">In progress</option>
-                    <option value="option2" selected>Not started</option>
-                    <option value="option3">Completed</option>
-                }
-                else if (Task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed))
-                {
-                    <option value="option1">In progress</option>
-                    <option value="option2">Not started</option>
-                    <option value="option3" selected>Completed</option>
-                }
-            </select>
-        </div>
-            <div class="prop">  <button class="Delete"> Delete </button> </div>
-           
+                <select class="mySelect">
+                    @if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress))
+                    {
+                        <option value="option1" selected>In progress</option>
+                        <option value="option2">Not started</option>
+                        <option value="option3">Completed</option>
+                    }
+                    else if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.NotStarted))
+                    {
+                        <option value="option1">In progress</option>
+                        <option value="option2" selected>Not started</option>
+                        <option value="option3">Completed</option>
+                    }
+                    else if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed))
+                    {
+                        <option value="option1">In progress</option>
+                        <option value="option2">Not started</option>
+                        <option value="option3" selected>Completed</option>
+                    }
+                </select>
+            </div>
+
+            <div class="prop">
+                <form method="post" action="@Url.Action("DeleteTask", "Home")">
+                    @Html.Hidden("todoListId", 20)
+                    @Html.Hidden("taskId", task.Id)
+                    <button class="Delete" type="submit">Delete</button>
+                </form>
+            </div>
+            <div class="prop">
+                <form method="post" action="@Url.Action("DeleteTask", "Home")">
+                    <button class="edit" type="submit">Edit</button>
+                </form>
+            </div>
         </div>
     }
 </div>

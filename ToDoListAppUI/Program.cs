@@ -13,14 +13,11 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services required for MVC
 builder.Services.AddControllersWithViews();
 
-// Add Entity Framework services for UsersDbContext
 builder.Services.AddDbContext<UsersDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("UsersDbConnection")));
 
-// Add Identity services
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
@@ -32,11 +29,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<UsersDbContext>()
     .AddDefaultTokenProviders();
 
-// Add HTTP client for TodoListWebApiService
 builder.Services.AddHttpClient<ITodoListWebApiService, TodoListWebApiService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7192");
 });
+builder.Services.AddScoped<ITaskWebApiService, TaskWebApiService>();
 
 var app = builder.Build();
 
