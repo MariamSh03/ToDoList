@@ -5,10 +5,60 @@ body {
 
 .todo-list{
     align-content: center;
+    padding: 40px 20px;
 }
 
 .tasks {
     list-style: none;
     padding: 0;
 
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #40A2D8;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.navbar div {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 20px;
+}
+
+.user {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+form{
+    align-content: center;
+}
+
+.deletebtn {
+    width: 100px;
+    height: 45px;
+    border-radius: 10px;
+    border: 2px solid rgb(231, 50, 50);
+    background-color: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 10px #333;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.deletebtn:hover {
+    background-color: rgb(245, 207, 207);
+    transform: scale(1.2);
+    box-shadow: 0 0 4px #111;
+    transition: .3s;
 }

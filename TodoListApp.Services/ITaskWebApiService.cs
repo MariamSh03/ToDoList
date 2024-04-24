@@ -1,12 +1,13 @@
-namespace TodoListApp.Services;
-public interface ITaskWebApiService
+using TodoListApp.WebApi.Models;
+
+namespace TodoListApp.Services
 {
     public interface ITaskWebApiService
     {
-        Task<IEnumerable<Task>> GetTasks();
-        Task AddTask(Task task);
-        Task DeleteTask(int taskId);
-        Task UpdateTask(Task task);
-        Task<Task> GetTaskById(int taskId);
+        Task<IEnumerable<TaskModel>> GetTasks();
+        Task<TaskModel> GetTaskById(int taskId);
+        System.Threading.Tasks.Task AddTask(TaskModel task);
+        System.Threading.Tasks.Task UpdateTask(TaskModel task);
+        System.Threading.Tasks.Task DeleteTask(int taskId);
     }
 }

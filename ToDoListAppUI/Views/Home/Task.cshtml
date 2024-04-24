@@ -14,8 +14,24 @@
                 <div class="overdue-tag">Overdue</div>
             }
             <div class="prop">@task.Title</div>
-            <div class="prop">@task.Description</div>
             <div class="prop"> Due: @task.DueDate.ToString("HH:mm")</div>
+            <div class="actions">
+                <form id="deleteForm_@task.Id" method="post" action="@Url.Action("DeleteTask", "Home")">
+                    <input type="hidden" name="taskId" value="@task.Id" />
+                    <button class="delete" type="submit">Delete</button>
+                </form>
+
+
+                <form method="post" action="@Url.Action("EditTask", "Home")">
+                    <button class="edit" type="submit">Edit</button>
+                </form>
+
+
+                <form method="post" action="@Url.Action("TodoLists", "Home")">
+                    <button class="details" type="submit">Details</button>
+                </form>
+            </div>
+       
             <div class="prop">
                 <select class="mySelect">
                     @if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress))
@@ -38,19 +54,7 @@
                     }
                 </select>
             </div>
-
-            <div class="prop">
-                <form method="post" action="@Url.Action("DeleteTask", "Home")">
-                    @Html.Hidden("todoListId", 20)
-                    @Html.Hidden("taskId", task.Id)
-                    <button class="Delete" type="submit">Delete</button>
-                </form>
-            </div>
-            <div class="prop">
-                <form method="post" action="@Url.Action("DeleteTask", "Home")">
-                    <button class="edit" type="submit">Edit</button>
-                </form>
-            </div>
         </div>
+
     }
 </div>

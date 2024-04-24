@@ -3,16 +3,36 @@
 <head>
     <link rel="stylesheet" href="~/css/TodoList.css" />
 </head>
-
-<div class="todo-lists">
-    @foreach (var todoList in Model)
-    {
-        <div class="todo-list">
-            <h1> @todoList.Title </h1>
-            @Html.Partial("Task", todoList.Tasks)
+<body>
+    <div class="navbar">
+        <div class="LogOut"> LogOut  </div>
+        <div class="listName"> My todo  </div>
+        <input type="text" placeholder="Search..">
+        <div class="user">
+            <div class="Photo"> Photo </div>
+            <div class="username"> username  </div>
         </div>
-    }
-</div>
-<div class="add-task">
-    <a href="@Url.Action("AddTask", "Home")" class="btn btn-primary">Add New Task</a>
-</div>
+     </div>
+
+    <div class="todo-lists">
+        @foreach (var todoList in Model)
+        {
+            <div class="todo-list">
+                <div class="header">
+                    <h1> @todoList.Title </h1>
+                    <form method="post" asp-action="DeleteTodoList">
+                        <input type="hidden" name="todoListId" value="@todoList.Id" />
+                        <button class="deletebtn" type="submit">Delete List</button>
+                    </form>
+                </div>
+               
+                @Html.Partial("Task", todoList.Tasks)
+            </div>
+        }
+    </div>
+    <div class="add-task">
+        <a href="@Url.Action("AddTask", "Home")" class="btn btn-primary">Add New Task</a>
+    </div>
+
+</body>
+

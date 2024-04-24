@@ -61,6 +61,54 @@ namespace TodoListApp.WebApp.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteTodoList(int todoListId)
+        {
+            try
+            {
+                await _todoListWebApiService.DeleteTodoList(todoListId);
+                return RedirectToAction("TodoLists"); // Redirect to TodoLists action after successful deletion
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle any exceptions that might occur during deletion
+                _logger.LogError($"An error occurred while deleting todo list: {ex.Message}");
+                return RedirectToAction("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteTask(int taskId)
+        {
+            try
+            {
+                await _taskWebApiService.DeleteTask(taskId);
+                return RedirectToAction("TodoLists");
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle any exceptions that might occur during deletion
+                _logger.LogError($"An error occurred while deleting todo list: {ex.Message}");
+                return RedirectToAction("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTask(int taskId)
+        {
+            try
+            {
+                await _taskWebApiService.DeleteTask(taskId);
+                return RedirectToAction("TodoLists");
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle any exceptions that might occur during deletion
+                _logger.LogError($"An error occurred while deleting todo list: {ex.Message}");
+                return RedirectToAction("Error");
+            }
+        }
+
         public IActionResult SignInPage()
         {
             return this.View();

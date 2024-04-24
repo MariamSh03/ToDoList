@@ -175,9 +175,13 @@ h1 {
     transition: all 0.3s ease-in;
 }
 
-    .theme-btn:hover {
+.theme-btn:hover {
         width: 40px !important;
-    }
+}
+.sub {
+    text-decoration-color: white;
+
+}
 
 @keyframes wobble {
     0% {

@@ -6,7 +6,7 @@ using TodoListApp.WebApi.Models;
 namespace TodoListApp.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("TodoLists")]
     public class TaskController : ControllerBase
     {
         private readonly TodoListDatabaseService _todoService;
@@ -47,7 +47,7 @@ namespace TodoListApp.WebApi.Controllers
             try
             {
                 _todoService.DeleteTask(todoListId, taskId);
-                return RedirectToAction("Home/TodoLists");
+                return Ok("Task deleted successfully");
             }
             catch (ArgumentException ex)
             {
@@ -87,9 +87,9 @@ namespace TodoListApp.WebApi.Controllers
         {
             try
             {
-                var task = new TodoListApp.Services.Task
+                var task = new Services.Task
                 {
-                    Id = taskId, // Set the ID of the task being edited
+                    Id = taskId,
                     Title = taskModel.Title,
                     Description = taskModel.Description,
                     CreationDate = taskModel.CreationDate,
