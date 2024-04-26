@@ -87,8 +87,26 @@ namespace TodoListApp.WebApp.Controllers
             }
             catch (ArgumentException ex)
             {
-                // Handle any exceptions that might occur during deletion
-                _logger.LogError($"An error occurred while deleting todo list: {ex.Message}");
+                _logger.LogError($"An error occurred while deleting task: {ex.Message}");
+                return RedirectToAction("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTask(TaskModel taskModel)
+        {
+            try
+            {
+                // Call the service method to add the task
+                await _taskWebApiService.AddTask(taskModel);
+
+                // Redirect to the TodoLists action after successful addition
+                return RedirectToAction("TodoLists");
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle any exceptions that might occur during task addition
+                _logger.LogError($"An error occurred while adding a new task: {ex.Message}");
                 return RedirectToAction("Error");
             }
         }

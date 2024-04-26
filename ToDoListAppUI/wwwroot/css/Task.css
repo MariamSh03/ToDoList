@@ -1,89 +1,63 @@
-body {
-    text-align: center;
-    font-family: 'Segoe Print';
-}
-
 .Task-container {
     background-color: white;
     display: flex;
-    align-content: space-between;
-    width: 90%;
+    justify-content: space-evenly;
+    width: 95%;
     border-radius: 20px;
     height: 60px;
     margin-top: 10px;
 }
 
-.prop {
-    flex: 1; 
-    margin-top: 5px;
+.title, .due, .actions, .select {
+    margin: 10px 5px;
+}
+
+.actions, .select {
+    display: flex;
+    justify-content: center;
 }
 
 .mySelect {
+    width: 100%;
     border-radius: 5px;
-    margin-top: 5px;
     height: 80%;
+    margin-top: 5px;
+}
+
+.Delete, .edit, .details {
+    width: 80px;
+    height: 50px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    transition: 200ms;
+    color: white;
+    font-weight: bold;
 }
 
 .Delete {
-    width: 80px;
-    height: 50px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
     background: #e62222;
-    transition: 200ms;
-    transform: translateX(35px);
-    color: white;
-    font-weight: bold;
 }
 
 .edit {
-    width: 80px;
-    height: 50px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
     background: #40A2D8;
-    transition: 200ms;
-    transform: translateX(35px);
-    color: white;
-    font-weight: bold;
 }
 
-.Delete:hover {
-    background: #ff3636;
-}
-
-
-.edit:hover {
-    background: #6ad9ef;
-}
-
-.actions {
-    display: flex;
-    justify-content: space-evenly;
-    padding: 10px 10px;
-    margin-top: 10px;
+.details {
+    background: #5aa548;
 }
 
 .actions button {
     margin-right: 5px;
 }
 
-.details {
-    width: 80px;
-    height: 50px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background: #5aa548;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
-    transition: 200ms;
-    transform: translateX(35px);
-    color: white;
-    font-weight: bold;
+.Delete:hover {
+    background: #ff3636;
+}
+
+.edit:hover {
+    background: #6ad9ef;
 }
 
 .details:hover {

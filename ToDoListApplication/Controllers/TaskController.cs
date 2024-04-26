@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using TodoListApp.Services;
 using TodoListApp.Services.Database;
@@ -16,21 +17,23 @@ namespace TodoListApp.WebApi.Controllers
             _todoService = todoService;
         }
 
-        [HttpGet("{todoListId}/tasks/{taskId}")]
-        public IActionResult GetTaskDetails(int todoListId, int taskId)
+        [HttpGet("tasks/{taskId}")]
+        public IActionResult GetTaskDetails(int taskId)
         {
             try
             {
-                var todoList = _todoService.GetTodoListById(todoListId);
-                if (todoList == null)
+                var todoLists = _todoService.GetTodoLists();
+
+                if (todoLists == null)
                 {
-                    return NotFound($"Todo list with ID {todoListId} not found");
+                    return NotFound($"Task with ID {taskId} not found");
                 }
 
-                var task = todoList.Tasks.FirstOrDefault(t => t.Id == taskId);
+                var task = todoLists.SelectMany(todoList => todoList.Tasks).FirstOrDefault(t => t.Id == taskId);
+
                 if (task == null)
                 {
-                    return NotFound($"Task with ID {taskId} not found in todo list with ID {todoListId}");
+                    return NotFound($"Task with ID {taskId} not found");
                 }
 
                 return Ok(task);
@@ -41,12 +44,12 @@ namespace TodoListApp.WebApi.Controllers
             }
         }
 
-        [HttpDelete("{todoListId}/tasks/{taskId}")]
-        public IActionResult DeleteTask(int todoListId, int taskId)
+        [HttpDelete("tasks/{taskId}")]
+        public IActionResult DeleteTask(int taskId)
         {
             try
             {
-                _todoService.DeleteTask(todoListId, taskId);
+                _todoService.DeleteTask(taskId);
                 return Ok("Task deleted successfully");
             }
             catch (ArgumentException ex)
@@ -82,8 +85,8 @@ namespace TodoListApp.WebApi.Controllers
             }
         }
 
-        [HttpPut("{todoListId}/tasks/{taskId}")]
-        public IActionResult EditTask(int todoListId, int taskId, [FromBody] TaskModel taskModel)
+        [HttpPut("tasks/{taskId}")]
+        public IActionResult EditTask(int taskId, [FromBody] TaskModel taskModel)
         {
             try
             {
@@ -94,13 +97,13 @@ namespace TodoListApp.WebApi.Controllers
                     Description = taskModel.Description,
                     CreationDate = taskModel.CreationDate,
                     DueDate = taskModel.DueDate,
-                    Status = (TodoListApp.Services.TaskStatus)taskModel.Status,
+                    Status = (Services.TaskStatus)taskModel.Status,
                     Assignee = taskModel.Assignee,
                     Tags = taskModel.Tags,
-                    Comments = taskModel.Comments
+                    Comments = taskModel.Comments,
                 };
 
-                _todoService.EditTask(todoListId, task);
+                _todoService.EditTask(taskId, task);
 
                 return Ok("Task edited successfully");
             }

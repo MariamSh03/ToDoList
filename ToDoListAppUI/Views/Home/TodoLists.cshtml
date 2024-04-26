@@ -7,32 +7,61 @@
     <div class="navbar">
         <div class="LogOut"> LogOut  </div>
         <div class="listName"> My todo  </div>
-        <input type="text" placeholder="Search..">
+        <form asp-action="TodoLists" asp-controller="Home" method="post" class="search-form">
+            <input type="text" name="searchString" placeholder="Search.." value="@ViewBag.SearchString">
+            <button type="submit">Search</button>
+        </form>
         <div class="user">
             <div class="Photo"> Photo </div>
             <div class="username"> username  </div>
         </div>
      </div>
 
-    <div class="todo-lists">
-        @foreach (var todoList in Model)
+
+   <div class="todo-lists">
+    @foreach (var todoList in Model)
+    {
+        <div class="todo-list">
+            <div class="header">
+                <h1> @todoList.Title </h1>
+                <form id="deletebtnForm" method="post" asp-action="DeleteTodoList">
+                    <input type="hidden" name="todoListId" value="@todoList.Id" />
+                    <button class="deletebtn" type="submit">Delete List</button>
+                </form>
+            </div>
+           
+            @Html.Partial("Task", todoList.Tasks)
+        </div>
+
+        var isAddTaskClicked = true;
+            <button class="add-task" name="addTaskButton" formmethod="post" formaction="@Url.Action("ToggleAddTaskForm", "Home")">Add Task</button>
+            @if (isAddTaskClicked)
         {
-            <div class="todo-list">
-                <div class="header">
-                    <h1> @todoList.Title </h1>
-                    <form method="post" asp-action="DeleteTodoList">
-                        <input type="hidden" name="todoListId" value="@todoList.Id" />
-                        <button class="deletebtn" type="submit">Delete List</button>
-                    </form>
-                </div>
-               
-                @Html.Partial("Task", todoList.Tasks)
+            <div class="add-task-container">
+                <h2>Add New Task</h2>
+
+                <form method="post" asp-action="AddTask">
+                    <input type="hidden" name="todoListId" value="@todoList.Id" />
+                    <div class="form-group">
+                        <label>Title:</label>
+                        <input name="Title" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea name="Description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date:</label>
+                        <input name="DueDate" type="datetime" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Tags:</label>
+                        <input name="Tags" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </form>
             </div>
         }
-    </div>
-    <div class="add-task">
-        <a href="@Url.Action("AddTask", "Home")" class="btn btn-primary">Add New Task</a>
-    </div>
-
+    }
 </body>
-

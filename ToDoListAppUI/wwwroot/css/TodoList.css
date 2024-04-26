@@ -40,7 +40,7 @@ body {
     justify-content: space-evenly;
 }
 
-form{
+deletebtnForm {
     align-content: center;
 }
 
@@ -62,3 +62,41 @@ form{
     box-shadow: 0 0 4px #111;
     transition: .3s;
 }
+
+.add-task{
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.add-task:hover {
+    background-color: #0056b3;
+}
+
+.add-task-container {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-top: 20px;
+}
+
+    .add-task-container label {
+        font-weight: bold;
+    }
+
+    .add-task-container .form-group {
+        margin-bottom: 15px;
+    }
+
+    .add-task-container .form-control {
+        width: 100%;
+    }
+
+    .add-task-container .btn-primary {
+        margin-top: 10px;
+    }

@@ -13,14 +13,13 @@
             {
                 <div class="overdue-tag">Overdue</div>
             }
-            <div class="prop">@task.Title</div>
-            <div class="prop"> Due: @task.DueDate.ToString("HH:mm")</div>
+            <div class="title">@task.Title</div>
+            <div class="due"> Due: @task.DueDate.ToString("HH:mm")</div>
             <div class="actions">
-                <form id="deleteForm_@task.Id" method="post" action="@Url.Action("DeleteTask", "Home")">
+                <form method="post" action="@Url.Action("DeleteTask", "Home")">
                     <input type="hidden" name="taskId" value="@task.Id" />
                     <button class="delete" type="submit">Delete</button>
                 </form>
-
 
                 <form method="post" action="@Url.Action("EditTask", "Home")">
                     <button class="edit" type="submit">Edit</button>
@@ -32,7 +31,7 @@
                 </form>
             </div>
        
-            <div class="prop">
+            <div class="select">
                 <select class="mySelect">
                     @if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress))
                     {
