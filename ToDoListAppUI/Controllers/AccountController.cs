@@ -36,7 +36,6 @@ namespace TodoListApp.WebApp.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> LoginPost(string email, string password, bool rememberMe)
         {
@@ -50,13 +49,12 @@ namespace TodoListApp.WebApp.Controllers
 
             if (result.Succeeded)
             {
-                return this.RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return this.View("Error");
-            }
+
+            // Login failed, so add an error message to the ModelState and return the Login view
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View("Login");
         }
 
         [HttpPost]
@@ -65,7 +63,7 @@ namespace TodoListApp.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.RegisterUserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -78,7 +76,9 @@ namespace TodoListApp.WebApp.Controllers
                 }
             }
 
+            // If we reach here, something went wrong, so return the Register view with the model
             return View(model);
         }
+
     }
 }

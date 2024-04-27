@@ -3,6 +3,12 @@ body {
     font-family: "poppins";
 }
 
+
+.todo-lists {
+    align-content: center;
+    padding: 20px 20px;
+}
+
 .todo-list{
     align-content: center;
     padding: 40px 20px;
@@ -45,15 +51,16 @@ deletebtnForm {
 }
 
 .deletebtn {
-    width: 100px;
+    width: 90px;
     height: 45px;
     border-radius: 10px;
-    border: 2px solid rgb(231, 50, 50);
+    border: none;
     background-color: #fff;
     cursor: pointer;
     box-shadow: 0 0 10px #333;
     overflow: hidden;
     transition: .3s;
+    margin-top:20px;
 }
 
 .deletebtn:hover {
@@ -76,6 +83,32 @@ deletebtnForm {
     background-color: #0056b3;
 }
 
+.addTask {
+    display: flex;
+    justify-content: center;
+}
+
+.add-Todo {
+    display: flex;
+    justify-content: center;
+}
+
+button.add-Todobtn {
+    background-color: #004dff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    height: 50px;
+    width: 50%;
+    margin-top: 20px;
+}
+
+button.add-Todobtn:hover {
+    background-color: #007bff;
+}
+
 .add-task-container {
     display: none;
     padding: 20px;
@@ -85,18 +118,18 @@ deletebtnForm {
     margin-top: 20px;
 }
 
-    .add-task-container label {
-        font-weight: bold;
-    }
+.add-task-container label {
+    font-weight: bold;
+}
 
-    .add-task-container .form-group {
-        margin-bottom: 15px;
-    }
+.add-task-container .form-group {
+    margin-bottom: 15px;
+}
 
-    .add-task-container .form-control {
-        width: 100%;
-    }
+.add-task-container .form-control {
+    width: 100%;
+}
 
-    .add-task-container .btn-primary {
-        margin-top: 10px;
-    }
+.add-task-container .btn-primary {
+    margin-top: 10px;
+}

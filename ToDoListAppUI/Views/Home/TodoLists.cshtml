@@ -16,52 +16,36 @@
             <div class="username"> username  </div>
         </div>
      </div>
-
-
-   <div class="todo-lists">
-    @foreach (var todoList in Model)
-    {
-        <div class="todo-list">
-            <div class="header">
-                <h1> @todoList.Title </h1>
-                <form id="deletebtnForm" method="post" asp-action="DeleteTodoList">
-                    <input type="hidden" name="todoListId" value="@todoList.Id" />
-                    <button class="deletebtn" type="submit">Delete List</button>
-                </form>
-            </div>
-           
-            @Html.Partial("Task", todoList.Tasks)
-        </div>
-
-        var isAddTaskClicked = true;
-            <button class="add-task" name="addTaskButton" formmethod="post" formaction="@Url.Action("ToggleAddTaskForm", "Home")">Add Task</button>
-            @if (isAddTaskClicked)
+    <div class="todo-lists">
+        @if (Model == null || !Model.Any())
         {
-            <div class="add-task-container">
-                <h2>Add New Task</h2>
-
-                <form method="post" asp-action="AddTask">
-                    <input type="hidden" name="todoListId" value="@todoList.Id" />
-                    <div class="form-group">
-                        <label>Title:</label>
-                        <input name="Title" class="form-control" required />
-                    </div>
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <textarea name="Description" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Due Date:</label>
-                        <input name="DueDate" type="datetime" class="form-control" required />
-                    </div>
-                    <div class="form-group">
-                        <label>Tags:</label>
-                        <input name="Tags" class="form-control" />
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Add Task</button>
-                </form>
+            <div class="todo-list">
+                <div class="header">
+                    <h1>No To do List</h1>
+                </div>
             </div>
         }
-    }
+        else
+        {
+            @foreach (var todoList in Model)
+            {
+                <div class="todo-list">
+                    <div class="header">
+                        <h1>@todoList.Title</h1>
+                        <form id="deletebtnForm" method="post" asp-action="DeleteTodoList">
+                            <input type="hidden" name="todoListId" value="@todoList.Id" />
+                            <button class="deletebtn" type="submit">Delete List</button>
+                        </form>
+                    </div>
+                    @Html.Partial("Task", todoList.Tasks)
+                </div>
+            }
+            <div class="addTask">
+                <button class="add-task" name="addTaskButton" formmethod="post" formaction="@Url.Action("ToggleAddTaskForm", "Home")">Add Task</button>
+            </div>
+        }
+    </div>
+    <div class="add-Todo">
+        <button class="add-Todobtn" name="addListButton" formmethod="post" formaction="@Url.Action("ToggleAddTaskForm", "Home")">Add TodoList</button>
+    </div>
 </body>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TodoListApp.WebApp.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class CreateUserDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

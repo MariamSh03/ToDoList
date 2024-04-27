@@ -26,4 +26,8 @@
     <ProjectReference Include="..\TodoListApp.Services\TodoListApp.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
