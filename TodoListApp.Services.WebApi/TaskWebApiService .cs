@@ -36,14 +36,13 @@ public class TaskWebApiService : ITaskWebApiService
         return JsonConvert.DeserializeObject<TaskModel>(content);
     }
 
-    public async System.Threading.Tasks.Task AddTask(TaskModel task)
+    public async System.Threading.Tasks.Task AddTask(TaskModel task, int listId)
     {
         var json = JsonConvert.SerializeObject(task);
         var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync("/TodoLists/tasks", data);
-        
-
+        var response = await this._httpClient.PostAsync($"/TodoLists/{listId}/tasks", data);
+        var responseContent = await response.Content.ReadAsStringAsync();
     }
 
     public async System.Threading.Tasks.Task UpdateTask(TaskModel task)

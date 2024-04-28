@@ -7,7 +7,7 @@
     <div class="navbar">
         <div class="LogOut"> LogOut  </div>
         <div class="listName"> My todo  </div>
-        <form asp-action="TodoLists" asp-controller="Home" method="post" class="search-form">
+        <form asp-action="TodoLists" asp-controller="Home" method="get" class="search-form">
             <input type="text" name="searchString" placeholder="Search.." value="@ViewBag.SearchString">
             <button type="submit">Search</button>
         </form>
@@ -38,11 +38,50 @@
                         </form>
                     </div>
                     @Html.Partial("Task", todoList.Tasks)
+
+                    <div class="addTask">
+
+                        @using (Html.BeginForm("AddTask", "Home", FormMethod.Post))
+                        {
+                            @Html.Hidden("todoListId", todoList.Id)
+
+                            <div class="add-task-container">
+                                <form method="post" asp-action="AddTask">
+                                    <input type="hidden" name="listId" value="@todoList.Id">
+
+                                    <div class="form-group">
+                                        <label>Title:</label>
+                                        <input name="Title" class="form-control" required />
+                                        <span class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Description:</label>
+                                        <input name="Description" class="form-control" required />
+                                        <span class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Due Date:</label>
+                                        <input name="DueDate" type="datetime-local" class="form-control" required />
+                                        <span class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Tags:</label>
+                                        <input name="Tags" class="form-control" required />
+                                        <span class="text-danger"></span>
+                                    </div>
+
+                                    <div class="addTaskButton">
+                                        <button type="submit" class="btn btn-primary">Add Task</button>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    </div>
                 </div>
             }
-            <div class="addTask">
-                <button class="add-task" name="addTaskButton" formmethod="post" formaction="@Url.Action("ToggleAddTaskForm", "Home")">Add Task</button>
-            </div>
         }
     </div>
     <div class="add-Todo">

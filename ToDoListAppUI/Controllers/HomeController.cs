@@ -5,6 +5,9 @@ using TodoListApp.WebApp.Models;
 using TodoListApp.Services;
 using TodoListApp.Services.WebApi;
 using TodoListApp.WebApi.Models;
+using System.Threading.Tasks;
+using System.Globalization;
+using Microsoft.VisualBasic;
 
 namespace TodoListApp.WebApp.Controllers
 {
@@ -31,9 +34,19 @@ namespace TodoListApp.WebApp.Controllers
             return this.View();
         }
 
-        public async Task<IActionResult> TodoLists()
+        public async Task<IActionResult> TodoLists(string searchString)
         {
+            // Get all todo lists
             var todoLists = await _todoListWebApiService.GetTodoLists();
+
+            // Filter todo lists based on search string
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                todoLists = todoLists.Where(t => t.Title.Contains(searchString) ||
+                                                  t.Tasks.Any(task => task.Title.Contains(searchString)));
+            }
+
+            // Map to ViewModel
             var todoListsModel = todoLists.Select(todoList => new TodoListModel
             {
                 Id = todoList.Id,
@@ -53,12 +66,10 @@ namespace TodoListApp.WebApp.Controllers
                 }).ToList(),
             }).ToList();
 
-            return this.View(todoListsModel);
-        }
+            // Pass search string to the view
+            ViewBag.SearchString = searchString;
 
-        public IActionResult AddTask()
-        {
-            return View();
+            return this.View(todoListsModel);
         }
 
         [HttpPost]
@@ -93,14 +104,17 @@ namespace TodoListApp.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTask(TaskModel taskModel)
+        public async Task<IActionResult> AddTask(TaskModel taskModel, int listId)
         {
             try
             {
+                DateTime dueDate = DateTime.ParseExact(taskModel.DueDate.ToString("yyyy-MM-ddTHH:mm:ss"), "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+                taskModel.DueDate = dueDate;
+                taskModel.Assignee= listId.ToString();
+                taskModel.Comments = string.Empty;
                 // Call the service method to add the task
-                await _taskWebApiService.AddTask(taskModel);
+                await _taskWebApiService.AddTask(taskModel, listId);
 
-                // Redirect to the TodoLists action after successful addition
                 return RedirectToAction("TodoLists");
             }
             catch (ArgumentException ex)
