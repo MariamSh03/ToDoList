@@ -6,11 +6,39 @@
     $(document).ready(function () {
         // Event listener for the Details button click
         $('.detailsButton').click(function (e) {
-            e.preventDefault(); 
+            e.preventDefault();
             $('.task-details-container').toggle();
         });
     });
+
+    $('.mySelect').change(function () {
+        var taskId = $(this).data('taskid');
+        var newStatus = $(this).val();
+        updateTaskStatus(taskId, newStatus);
+    });
+
+    // Function to update task status via AJAX
+    function updateTaskStatus(taskId, newStatus) {
+        $.ajax({
+            url: '/Home/UpdateTaskStatus',
+            type: 'POST',
+            data: {
+                taskId: taskId,
+                newStatus: newStatus
+            },
+            success: function (data) {
+                // Refresh the page or update UI as needed
+                location.reload(); // Example: Reload the page to reflect changes
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error(error);
+            }
+        });
+    }
 </script>
+
+
 
 
 <head>
@@ -43,7 +71,7 @@
             </div>
        
             <div class="select">
-                <select class="mySelect">
+                <select class="mySelect" data-taskId="@task.Id">
                     @if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress))
                     {
                         <option value="option1" selected>In progress</option>
@@ -76,7 +104,7 @@
                         <input name="Title" class="form-control" value="@task.Title" required />
                         <span class="text-danger"></span>
                     </div>
-                    <!-- Move description and due date fields outside of the form -->
+
                     <div class="form-group">
                         <label>Description:</label>
                         <input name="Description" class="form-control" value="@task.Description" required />

@@ -59,4 +59,14 @@ public class TaskWebApiService : ITaskWebApiService
         var response = await _httpClient.DeleteAsync($"/TodoLists/tasks/{taskId}");
         response.EnsureSuccessStatusCode();
     }
+
+    public async System.Threading.Tasks.Task UpdateTaskStatus(int taskId, TodoListApp.Services.TaskStatus status)
+    {
+
+        var json = JsonConvert.SerializeObject(status);
+        var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PutAsync($"/TodoLists/tasks/{taskId}/status", data);
+        response.EnsureSuccessStatusCode();
+    }
 }

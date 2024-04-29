@@ -9,5 +9,6 @@ namespace TodoListApp.Services
         System.Threading.Tasks.Task AddTask(TaskModel task, int listId);
         System.Threading.Tasks.Task UpdateTask(TaskModel task);
         System.Threading.Tasks.Task DeleteTask(int taskId);
+        System.Threading.Tasks.Task UpdateTaskStatus(int taskId, TaskStatus status);
     }
 }

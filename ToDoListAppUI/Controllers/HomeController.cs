@@ -165,31 +165,51 @@ namespace TodoListApp.WebApp.Controllers
             }
         }
 
-        public async Task<IActionResult> GetTaskDetails(int taskId)
+        [HttpPost]
+        public async Task<IActionResult> UpdateTaskStatus(int taskId, string newStatus)
         {
             try
             {
-                // Get the task details by its ID
-                var taskDetails = await _taskWebApiService.GetTaskById(taskId);
+                var task = await _taskWebApiService.GetTaskById(taskId);
 
-                // Check if the task details are retrieved successfully
-                if (taskDetails != null)
+                if (task != null)
                 {
-                    // Pass the task details to the view
-                    return View(taskDetails);
+                    task.Status = (WebApi.Models.TaskStatus)Enum.Parse(typeof(WebApi.Models.TaskStatus), newStatus);
+                    await _taskWebApiService.UpdateTaskStatus(taskId, (Services.TaskStatus)task.Status);
+                    return RedirectToAction("TodoLists");
                 }
                 else
                 {
-                    // Task with the provided ID not found
-                    _logger.LogWarning($"Task with ID {taskId} not found.");
-                    return RedirectToAction("Error", new { message = "Task not found." });
+                    return NotFound($"Task with ID {taskId} not found");
                 }
             }
             catch (ArgumentException ex)
             {
-                // Handle any exceptions that might occur
-                _logger.LogError($"An error occurred while fetching task details: {ex.Message}");
-                return RedirectToAction("Error", new { message = "An error occurred while fetching task details." });
+                _logger.LogError($"An error occurred while updating task status: {ex.Message}");
+                return StatusCode(500, $"An error occurred while updating task status: {ex.Message}");
+            }
+        }
+
+        public async Task<IActionResult> GetTaskDetails(int taskId)
+        {
+            try
+            {
+                var taskDetails = await this._taskWebApiService.GetTaskById(taskId);
+
+                if (taskDetails != null)
+                {
+                    return this.View(taskDetails);
+                }
+                else
+                {
+                    this._logger.LogWarning($"Task with ID {taskId} not found.");
+                    return this.RedirectToAction("Error", new { message = "Task not found." });
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                this._logger.LogError($"An error occurred while fetching task details: {ex.Message}");
+                return this.RedirectToAction("Error", new { message = "An error occurred while fetching task details." });
             }
         }
 

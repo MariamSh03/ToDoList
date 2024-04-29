@@ -103,7 +103,7 @@ namespace TodoListApp.WebApi.Controllers
                     Comments = taskModel.Comments,
                 };
 
-                _todoService.EditTask(taskId, task);
+                this._todoService.EditTask(taskId, task);
 
                 return Ok("Task edited successfully");
             }
@@ -112,5 +112,33 @@ namespace TodoListApp.WebApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpPost("tasks/{taskId}/status")]
+        public IActionResult UpdateTaskStatus(int taskId, [FromBody] string newStatus)
+        {
+            try
+            {
+                // Get the task from the database
+                var task = _todoService.GetTaskById(taskId);
+
+                if (task == null)
+                {
+                    return NotFound($"Task with ID {taskId} not found");
+                }
+
+                // Update the task status directly
+                task.Status = Enum.Parse<Services.TaskStatus>(newStatus);
+
+                // Update the task in the database
+                _todoService.UpdateTask(task);
+
+                return Ok("Task status updated successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(500, $"An error occurred while updating task status: {ex.Message}");
+            }
+        }
+
     }
 }

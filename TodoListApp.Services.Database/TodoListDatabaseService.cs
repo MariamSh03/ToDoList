@@ -241,4 +241,52 @@ public class TodoListDatabaseService : ITodoListService
 
         throw new ArgumentException($"Task with ID {taskId} not found");
     }
+
+    public Task GetTaskById(int taskId)
+    {
+        var todoLists = dbContext_.TodoLists.Include(t => t.Tasks).ToList();
+
+        foreach (var todoList in todoLists)
+        {
+            var task = todoList.Tasks.FirstOrDefault(t => t.Id == taskId);
+            if (task != null)
+            {
+                return new Task
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    CreationDate = task.CreationDate,
+                    DueDate = task.DueDate,
+                    Status = task.Status,
+                    Assignee = task.Assignee,
+                    Tags = task.Tags,
+                    Comments = task.Comments
+                };
+            }
+        }
+
+        throw new ArgumentException($"Task with ID {taskId} not found");
+    }
+
+    public void UpdateTask(Task task)
+    {
+        var todoLists = dbContext_.TodoLists.Include(t => t.Tasks).ToList();
+
+        foreach (var todoList in todoLists)
+        {
+            var taskToUpdate = todoList.Tasks.FirstOrDefault(t => t.Id == task.Id);
+
+            if (taskToUpdate != null)
+            {
+                taskToUpdate.Status = task.Status;
+
+                dbContext_.SaveChanges();
+                return;
+            }
+        }
+
+        throw new ArgumentException($"Task with ID {task.Id} not found");
+    }
+
 }
