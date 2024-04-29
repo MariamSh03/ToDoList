@@ -1,4 +1,18 @@
 @model IEnumerable<TodoListApp.WebApi.Models.TaskModel>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Event listener for the Details button click
+        $('.detailsButton').click(function (e) {
+            e.preventDefault(); 
+            $('.task-details-container').toggle();
+        });
+    });
+</script>
+
+
 <head>
     <link rel="stylesheet" href="~/css/Task.css" />
 </head>
@@ -21,13 +35,10 @@
                     <button class="delete" type="submit">Delete</button>
                 </form>
 
-                <form method="post" action="@Url.Action("EditTask", "Home")">
-                    <button class="edit" type="submit">Edit</button>
-                </form>
-
+                <button class="editTaskButton" type="button" data-taskId="@task.Id">Edit</button>
 
                 <form method="post" action="@Url.Action("TodoLists", "Home")">
-                    <button class="details" type="submit">Details</button>
+                    <button class="detailsButton" type="submit">Details</button>
                 </form>
             </div>
        
@@ -55,5 +66,47 @@
             </div>
         </div>
 
+        <div class="task-edit-container">
+            @using (Html.BeginForm("EditTask", "Home", FormMethod.Post))
+            {
+                @Html.Hidden("Id", task.Id)
+                <div class="edit-task-container">
+                    <div class="form-group">
+                        <label>Title:</label>
+                        <input name="Title" class="form-control" value="@task.Title" required />
+                        <span class="text-danger"></span>
+                    </div>
+                    <!-- Move description and due date fields outside of the form -->
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <input name="Description" class="form-control" value="@task.Description" required />
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Due data:</label>
+                        <input name="Due" class="form-control" value="@task.DueDate" required />
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Tags:</label>
+                        <input name="Tags" class="form-control" value="@task.Tags" required />
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="editTaskButton">
+                        <button type="submit" class="btn btn-primary">Update Task</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="task-details-container" style=" display: none;">
+            <dic class="head"> Task Details: </dic>
+            <div>Title: @task.Title</div>
+            <div>Description: @task.Description</div>
+            <div>Due: @task.DueDate</div>
+            <div>Cretion data:  @task.CreationDate</div>
+            <div>Status: @task.Status</div>
+            <div>Tags: @task.Tags</div>
+        </div>
     }
 </div>

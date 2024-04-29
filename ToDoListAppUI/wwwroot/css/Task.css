@@ -12,6 +12,8 @@
     margin: 10px 5px;
     display: flex;
     justify-content: center;
+    font-family: cursive;
+    font-size: large;
 }
 
 .actions, .select {
@@ -27,7 +29,7 @@
     margin-top: 5px;
 }
 
-.Delete, .edit, .details {
+.Delete, .editTaskButton, .detailsButton {
     width: 80px;
     height: 50px;
     cursor: pointer;
@@ -43,11 +45,11 @@
     background: #e62222;
 }
 
-.edit {
+.editTaskButton {
     background: #40A2D8;
 }
 
-.details {
+.detailsButton {
     background: #5aa548;
 }
 
@@ -59,10 +61,53 @@
     background: #ff3636;
 }
 
-.edit:hover {
+.editTaskButton:hover {
     background: #6ad9ef;
 }
 
-.details:hover {
+.detailsButton:hover {
     background: #87d58a;
+}
+
+.task-edit-container {
+    display: none;
+    margin-top: 30px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.task-details-container {
+    margin-top: 30px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 35%;
+    margin-left: 25%;
+    font-family: cursive;
+}
+
+.task-details-container .head {
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.task-details-container div {
+    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+.task-details-container div:last-child {
+    margin-bottom: 0;
+}
+
+.task-details-container div span {
+    font-weight: bold;
 }

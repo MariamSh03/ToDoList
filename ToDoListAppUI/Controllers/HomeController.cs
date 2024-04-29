@@ -1,13 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using TodoListApp.WebApp.Models;
+using System.Collections.Generic;
 using System.Diagnostics;
-using TodoListApp.WebApp.Models;
-using TodoListApp.Services;
-using TodoListApp.Services.WebApi;
-using TodoListApp.WebApi.Models;
-using System.Threading.Tasks;
 using System.Globalization;
-using Microsoft.VisualBasic;
+using Microsoft.AspNetCore.Mvc;
+using TodoListApp.Services;
+using TodoListApp.WebApi.Models;
+using TodoListApp.WebApp.Models;
 
 namespace TodoListApp.WebApp.Controllers
 {
@@ -78,11 +75,10 @@ namespace TodoListApp.WebApp.Controllers
             try
             {
                 await _todoListWebApiService.DeleteTodoList(todoListId);
-                return RedirectToAction("TodoLists"); // Redirect to TodoLists action after successful deletion
+                return RedirectToAction("TodoLists");
             }
             catch (ArgumentException ex)
             {
-                // Handle any exceptions that might occur during deletion
                 _logger.LogError($"An error occurred while deleting todo list: {ex.Message}");
                 return RedirectToAction("Error");
             }
@@ -126,18 +122,74 @@ namespace TodoListApp.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditTask(int taskId)
+        public async Task<IActionResult> AddTodo(TodoListModel newList)
         {
             try
             {
-                await _taskWebApiService.DeleteTask(taskId);
+                var list = new TodoList
+                {
+                    Id = newList.Id,
+                    Title = newList.Title,
+                    Description = newList.Description,
+                    Tasks = new List<Services.Task>(),
+                };
+
+                await _todoListWebApiService.AddTodoList(list);
+
                 return RedirectToAction("TodoLists");
             }
             catch (ArgumentException ex)
             {
-                // Handle any exceptions that might occur during deletion
-                _logger.LogError($"An error occurred while deleting todo list: {ex.Message}");
+                _logger.LogError($"An error occurred while adding a new TodoLIst: {ex.Message}");
                 return RedirectToAction("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTask(TaskModel taskModel)
+        {
+            try
+            {
+                DateTime dueDate = DateTime.ParseExact(taskModel.DueDate.ToString("yyyy-MM-ddTHH:mm:ss"), "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+                taskModel.DueDate = dueDate;
+                taskModel.Assignee = "me";
+                taskModel.Comments = string.Empty;
+                await _taskWebApiService.UpdateTask(taskModel);
+
+                return RedirectToAction("TodoLists");
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError($"An error occurred while updating the task: {ex.Message}");
+                return RedirectToAction("Error");
+            }
+        }
+
+        public async Task<IActionResult> GetTaskDetails(int taskId)
+        {
+            try
+            {
+                // Get the task details by its ID
+                var taskDetails = await _taskWebApiService.GetTaskById(taskId);
+
+                // Check if the task details are retrieved successfully
+                if (taskDetails != null)
+                {
+                    // Pass the task details to the view
+                    return View(taskDetails);
+                }
+                else
+                {
+                    // Task with the provided ID not found
+                    _logger.LogWarning($"Task with ID {taskId} not found.");
+                    return RedirectToAction("Error", new { message = "Task not found." });
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle any exceptions that might occur
+                _logger.LogError($"An error occurred while fetching task details: {ex.Message}");
+                return RedirectToAction("Error", new { message = "An error occurred while fetching task details." });
             }
         }
 

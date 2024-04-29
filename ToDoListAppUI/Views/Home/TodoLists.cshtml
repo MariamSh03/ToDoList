@@ -1,5 +1,24 @@
 @model IEnumerable<TodoListApp.WebApi.Models.TodoListModel>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Event listener for the Add Task button click
+        $('#addTaskButton0').click(function () {
+            $(this).hide();
+            $('.add-task-container').toggle();
+        });
+    });
+
+    $(document).ready(function () {
+        // Event listener for the Add TodoList button click
+        $('.add-Todobtn').click(function () {
+            $('.add-todo-container').toggle();
+        });
+    });
+</script>
+
 <head>
     <link rel="stylesheet" href="~/css/TodoList.css" />
 </head>
@@ -32,15 +51,22 @@
                 <div class="todo-list">
                     <div class="header">
                         <h1>@todoList.Title</h1>
-                        <form id="deletebtnForm" method="post" asp-action="DeleteTodoList">
-                            <input type="hidden" name="todoListId" value="@todoList.Id" />
-                            <button class="deletebtn" type="submit">Delete List</button>
-                        </form>
+                        <div class="ListActions">
+                            <form id="deletebtnForm" method="post" asp-action="DeleteTodoList">
+                                <input type="hidden" name="todoListId" value="@todoList.Id" />
+                                <button class="deletebtn" type="submit">Delete List</button>
+                            </form>
+                            <form id="editButtonForm" method="post" asp-action="DeleteTodoList">
+                                <input type="hidden" name="todoListId" value="@todoList.Id" />
+                                <button class="editList" type="submit">Edit List</button>
+                            </form>
+                        </div> 
+
                     </div>
                     @Html.Partial("Task", todoList.Tasks)
 
                     <div class="addTask">
-
+                        <button id="addTaskButton0" class="btn btn-primary">Add Task</button>
                         @using (Html.BeginForm("AddTask", "Home", FormMethod.Post))
                         {
                             @Html.Hidden("todoListId", todoList.Id)
@@ -84,7 +110,30 @@
             }
         }
     </div>
-    <div class="add-Todo">
-        <button class="add-Todobtn" name="addListButton" formmethod="post" formaction="@Url.Action("ToggleAddTaskForm", "Home")">Add TodoList</button>
+    <div class="addTodo">
+
+        <div class="add-Todo">
+            <button class="add-Todobtn" name="addListButton" formmethod="post" formaction="@Url.Action("ToggleAddTaskForm", "Home")">Add TodoList</button>
+        </div>
+
+        @using (Html.BeginForm("AddTodo", "Home", FormMethod.Post))
+        {
+
+            <div class="add-todo-container" style="display: non">
+                <form method="post" asp-action="AddTask">
+                    <input type="hidden" name="listId" >
+
+                    <div class="form-group">
+                        <label>Title:</label>
+                        <input name="Title" class="form-control" required />
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="addTodoButton">
+                        <button type="submit" class="btn btn-primary">Add List</button>
+                    </div>
+                </form>
+            </div>
+        }
     </div>
 </body>
