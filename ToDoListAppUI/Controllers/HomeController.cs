@@ -174,9 +174,16 @@ namespace TodoListApp.WebApp.Controllers
 
                 if (task != null)
                 {
-                    task.Status = (WebApi.Models.TaskStatus)Enum.Parse(typeof(WebApi.Models.TaskStatus), newStatus);
-                    await _taskWebApiService.UpdateTaskStatus(taskId, (Services.TaskStatus)task.Status);
-                    return RedirectToAction("TodoLists");
+                    if (Enum.TryParse(typeof(WebApi.Models.TaskStatus), newStatus, out object parsedStatus))
+                    {
+                        task.Status = (WebApi.Models.TaskStatus)parsedStatus;
+                        await _taskWebApiService.UpdateTaskStatus(taskId, newStatus);
+                        return this.RedirectToAction("TodoLists");
+                    }
+                    else
+                    {
+                        return BadRequest("Invalid task status.");
+                    }
                 }
                 else
                 {

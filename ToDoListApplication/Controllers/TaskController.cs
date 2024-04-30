@@ -118,7 +118,6 @@ namespace TodoListApp.WebApi.Controllers
         {
             try
             {
-                // Get the task from the database
                 var task = _todoService.GetTaskById(taskId);
 
                 if (task == null)
@@ -126,10 +125,8 @@ namespace TodoListApp.WebApi.Controllers
                     return NotFound($"Task with ID {taskId} not found");
                 }
 
-                // Update the task status directly
                 task.Status = Enum.Parse<Services.TaskStatus>(newStatus);
 
-                // Update the task in the database
                 _todoService.UpdateTask(task);
 
                 return Ok("Task status updated successfully");

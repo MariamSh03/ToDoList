@@ -60,13 +60,13 @@ public class TaskWebApiService : ITaskWebApiService
         response.EnsureSuccessStatusCode();
     }
 
-    public async System.Threading.Tasks.Task UpdateTaskStatus(int taskId, TodoListApp.Services.TaskStatus status)
+    public async System.Threading.Tasks.Task UpdateTaskStatus(int taskId, string status)
     {
-
         var json = JsonConvert.SerializeObject(status);
         var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PutAsync($"/TodoLists/tasks/{taskId}/status", data);
+        var response = await _httpClient.PostAsync($"/TodoLists/tasks/{taskId}/status", data);
         response.EnsureSuccessStatusCode();
     }
+
 }

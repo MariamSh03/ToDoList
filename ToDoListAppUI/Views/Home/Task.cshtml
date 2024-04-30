@@ -11,27 +11,22 @@
         });
     });
 
-    $('.mySelect').change(function () {
-        var taskId = $(this).data('taskid');
-        var newStatus = $(this).val();
-        updateTaskStatus(taskId, newStatus);
-    });
-
-    // Function to update task status via AJAX
     function updateTaskStatus(taskId, newStatus) {
+        // Send an AJAX request to the server to update task status
         $.ajax({
-            url: '/Home/UpdateTaskStatus',
+            url: '@Url.Action("UpdateTaskStatus", "Home")',
             type: 'POST',
             data: {
                 taskId: taskId,
                 newStatus: newStatus
             },
             success: function (data) {
-                // Refresh the page or update UI as needed
-                location.reload(); // Example: Reload the page to reflect changes
+                // Handle success
+                console.log("Task status updated successfully");
+                window.location.href = '@Url.Action("TodoLists", "Home")';
             },
             error: function (xhr, status, error) {
-                // Handle errors
+                // Handle error
                 console.error(error);
             }
         });
@@ -71,24 +66,24 @@
             </div>
        
             <div class="select">
-                <select class="mySelect" data-taskId="@task.Id">
+                <select class="mySelect" data-taskId="@task.Id" onchange="updateTaskStatus(@task.Id, this.value)">
                     @if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress))
                     {
-                        <option value="option1" selected>In progress</option>
-                        <option value="option2">Not started</option>
-                        <option value="option3">Completed</option>
+                        <option value="InProgress" selected>In progress</option>
+                        <option value="NotStarted">Not started</option>
+                        <option value="Completed">Completed</option>
                     }
                     else if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.NotStarted))
                     {
-                        <option value="option1">In progress</option>
-                        <option value="option2" selected>Not started</option>
-                        <option value="option3">Completed</option>
+                        <option value="InProgress">In progress</option>
+                        <option value="NotStarted" selected>Not started</option>
+                        <option value="Completed">Completed</option>
                     }
                     else if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed))
                     {
-                        <option value="option1">In progress</option>
-                        <option value="option2">Not started</option>
-                        <option value="option3" selected>Completed</option>
+                        <option value="InProgress">In progress</option>
+                        <option value="NotStarted">Not started</option>
+                        <option value="Completed" selected>Completed</option>
                     }
                 </select>
             </div>
