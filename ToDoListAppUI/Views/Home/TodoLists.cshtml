@@ -4,20 +4,63 @@
 
 <script>
     $(document).ready(function () {
-        // Event listener for the Add Task button click
+        // Event listener for the Details button click
+        $(document).on('click', '.detailsButton', function (e) {
+            e.preventDefault();
+            var detailsContainerId = $(this).data('details-container-id');
+            $('#' + detailsContainerId).toggle();
+        });
+
+        // Event listener for the Edit Task button click
+        $(document).on('click', '.editTaskButton', function (e) {
+            e.preventDefault();
+            var editContainerId = $(this).data('edit-container-id');
+            $('#' + editContainerId).toggle();
+        });
+
+        // Event listener for the Comments button click
+        $('.commentsButton').click(function (e) {
+            e.preventDefault();
+            window.location.href = '/Home/Comments';
+        });
+
+        // Event listener for task status change
+        $(document).on('change', '.mySelect', function () {
+            var taskId = $(this).data('task-id');
+            var newStatus = $(this).val();
+            updateTaskStatus(taskId, newStatus);
+        });
+
         $('#addTaskButton0').click(function () {
             $(this).hide();
             $('.add-task-container').toggle();
         });
-    });
 
-    $(document).ready(function () {
-        // Event listener for the Add TodoList button click
         $('.add-Todobtn').click(function () {
             $('.add-todo-container').toggle();
         });
+
     });
+
+    function updateTaskStatus(taskId, newStatus) {
+        $.ajax({
+            url: '@Url.Action("UpdateTaskStatus", "Home")',
+            type: 'POST',
+            data: {
+                taskId: taskId,
+                newStatus: newStatus
+            },
+            success: function (data) {
+                console.log("Task status updated successfully");
+                window.location.href = '@Url.Action("TodoLists", "Home")';
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
 </script>
+
 
 <head>
     <link rel="stylesheet" href="~/css/TodoList.css" />

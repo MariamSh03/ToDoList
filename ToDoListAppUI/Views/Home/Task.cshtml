@@ -1,52 +1,5 @@
 @model IEnumerable<TodoListApp.WebApi.Models.TaskModel>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        // Event listener for the Details button click
-        $('.detailsButton').click(function (e) {
-            e.preventDefault();
-            $('.task-details-container').toggle();
-        });
-
-        $('.editTaskButton').click(function (e) {
-            e.preventDefault();
-            var editContainerId = $(this).data('edit-container-id');
-            $('#' + editContainerId).toggle();
-        });
-    });
-
-    $(document).ready(function () {
-        $('.commentsButton').click(function (e) {
-            e.preventDefault();
-            window.location.href = '/Home/Comments';
-        });
-    });
-
-    function updateTaskStatus(taskId, newStatus) {
-        $.ajax({
-            url: '@Url.Action("UpdateTaskStatus", "Home")',
-            type: 'POST',
-            data: {
-                taskId: taskId,
-                newStatus: newStatus
-            },
-            success: function (data) {
-                console.log("Task status updated successfully");
-                window.location.href = '@Url.Action("TodoLists", "Home")';
-            },
-            error: function (xhr, status, error) {
-                // Handle error
-                console.error(error);
-            }
-        });
-    }
-</script>
-
-
-
-
 <head>
     <link rel="stylesheet" href="~/css/Task.css" />
 </head>
@@ -57,10 +10,7 @@
         <div class="Task-container" style="@(task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed) ?
                         "background-color: 4CCD99;" : (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress) ?
                             "background-color: FFF455;" :  ((task.DueDate < DateTime.Today) ? "Background-color: F2613F;" : "Background-color: White;")))">
-            @if (task.DueDate < DateTime.Today)
-            {
-                <div class="overdue-tag">Overdue</div>
-            }
+
             <div class="title"> <span>@task.Title</span> </div>
             <div class="due"> Due: @task.DueDate.ToString("HH:mm")</div>
             <div class="actions">
@@ -72,7 +22,7 @@
                 <button class="editTaskButton" type="button" data-edit-container-id="edit-id-@task.Id">Edit</button>
 
                 <form method="post" action="@Url.Action("TodoLists", "Home")">
-                    <button class="detailsButton" type="submit">Details</button>
+                    <button class="detailsButton" type="button" data-details-container-id="details-id-@task.Id">Details</button>
                 </form>
 
                 <button class="CommentsButton" type="button" data-taskId="@task.Id" >Comments</button>
@@ -100,9 +50,12 @@
                     }
                 </select>
             </div>
-
-
         </div>
+
+        @if (task.DueDate < DateTime.Today)
+        {
+            <div class="overdue-tag">Overdue</div>
+        }
 
         <div class="task-edit-container" id="edit-id-@task.Id" style="display: none;">
             @using (Html.BeginForm("EditTask", "Home", FormMethod.Post))
@@ -142,7 +95,7 @@
         </div>
 
 
-        <div class="task-details-container" style=" display: none;">
+        <div class="task-details-container" id="details-id-@task.Id" style="display: none;">
             <dic class="head"> Task Details: </dic>
             <div>Title: @task.Title</div>
             <div>Description: @task.Description</div>
