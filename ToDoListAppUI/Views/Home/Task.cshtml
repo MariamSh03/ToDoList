@@ -9,16 +9,15 @@
             e.preventDefault();
             $('.task-details-container').toggle();
         });
+
+        $('.editTaskButton').click(function (e) {
+            e.preventDefault();
+            var editContainerId = $(this).data('edit-container-id');
+            $('#' + editContainerId).toggle();
+        });
     });
 
     $(document).ready(function () {
-        // Event listener for the Details button click
-        $('.editTaskButton').click(function (e) {
-            e.preventDefault();
-            $(".task-edit-container").toggle();
-        });
-
-
         $('.commentsButton').click(function (e) {
             e.preventDefault();
             window.location.href = '/Home/Comments';
@@ -70,7 +69,7 @@
                     <button class="delete" type="submit">Delete</button>
                 </form>
 
-                <button class="editTaskButton" type="button" data-taskId="@task.Id">Edit</button>
+                <button class="editTaskButton" type="button" data-edit-container-id="edit-id-@task.Id">Edit</button>
 
                 <form method="post" action="@Url.Action("TodoLists", "Home")">
                     <button class="detailsButton" type="submit">Details</button>
@@ -105,7 +104,7 @@
 
         </div>
 
-        <div class="task-edit-container">
+        <div class="task-edit-container" id="edit-id-@task.Id" style="display: none;">
             @using (Html.BeginForm("EditTask", "Home", FormMethod.Post))
             {
                 @Html.Hidden("Id", task.Id)
