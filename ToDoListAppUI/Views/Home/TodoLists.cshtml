@@ -40,6 +40,17 @@
             $('.add-todo-container').toggle();
         });
 
+        $('#searchForm').submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+            var searchString = $(this).find('input[name="searchString"]').val(); // Get search string
+            var url = $(this).attr('action') + '?searchString=' + searchString; // Construct URL with search string
+            // Use AJAX to submit the form data and update the content
+            $.get(url, function (data) {
+                $('.todo-lists').html(data); // Update content with response data
+            }).fail(function (xhr, status, error) {
+                console.error(error);
+            });
+        });
     });
 
     function updateTaskStatus(taskId, newStatus) {
@@ -70,8 +81,8 @@
         <div class="LogOut"> LogOut  </div>
         <div class="listName"> My todo  </div>
         <form asp-action="TodoLists" asp-controller="Home" method="get" class="search-form">
-            <input type="text" name="searchString" placeholder="Search.." value="@ViewBag.SearchString">
-            <button type="submit">Search</button>
+            <input type="text" name="searchString" placeholder="Search with name.." value="@ViewBag.SearchString">
+            <button type="submit">S</button>
         </form>
         <div class="user">
             <div class="Photo"> Photo </div>
@@ -106,7 +117,17 @@
                         </div> 
 
                     </div>
-                    @Html.Partial("Task", todoList.Tasks)
+
+                    @if (string.IsNullOrEmpty(ViewBag.SearchString) || todoList.Tasks.Any(task => task.Title.Contains(ViewBag.SearchString)))
+                    {
+                        @Html.Partial("Task", todoList.Tasks.Where(task => string.IsNullOrEmpty(ViewBag.SearchString) || task.Title.Contains(ViewBag.SearchString)))
+                    }
+                    else
+                    {
+                        <div class="no-task-found">
+                            <p>No tasks found matching the search criteria.</p>
+                        </div>
+                    }
 
                     <div class="addTask">
                         <button id="addTaskButton0" class="btn btn-primary">Add Task</button>

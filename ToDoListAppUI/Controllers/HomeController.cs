@@ -84,8 +84,9 @@ namespace TodoListApp.WebApp.Controllers
             // Pass search string to the view
             ViewBag.SearchString = searchString;
 
-            return this.View(todoListsModel);
+            return View(todoListsModel);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> DeleteTodoList(int todoListId)
