@@ -8,12 +8,26 @@
     margin-top: 10px;
 }
 
-.title, .due, .actions, .select {
+.title, .due,.select {
     margin: 10px 5px;
     display: flex;
     justify-content: center;
     font-family: cursive;
     font-size: large;
+    align-items: center;
+}
+
+.actions {
+    margin: 10px 5px;
+    display: flex;
+    justify-content: center;
+    font-family: cursive;
+    font-size: large;
+}
+.title {
+    width: 150px;
+    overflow: auto;
+    white-space: nowrap;
 }
 
 .actions, .select {
@@ -29,7 +43,7 @@
     margin-top: 5px;
 }
 
-.Delete, .editTaskButton, .detailsButton {
+.Delete, .editTaskButton, .detailsButton, .CommentsButton {
     width: 80px;
     height: 50px;
     cursor: pointer;
@@ -57,6 +71,13 @@
     margin-right: 5px;
 }
 
+.CommentsButton {
+    background: #ffaf00;
+}
+
+.CommentsButton:hover {
+    background: #f0c668;
+}
 .Delete:hover {
     background: #ff3636;
 }
@@ -111,3 +132,51 @@
 .task-details-container div span {
     font-weight: bold;
 }
+/**/
+
+.select-container{
+    display: flex;
+    align-items: center;
+}
+
+.mySelect {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 150px;
+    height: 40px;
+    border: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px gray;
+    transition: 200ms;
+}
+
+.option {
+    padding: 0 30px 0 10px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    background: #333;
+    border-top: #222 solid 1px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    pointer-events: none;
+    order: 2;
+    z-index: 1;
+    transition: background .4s ease-in-out;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.option:hover {
+    background: #666;
+}
+
+.select:focus .option {
+    position: relative;
+    pointer-events: all;
+}
+
+

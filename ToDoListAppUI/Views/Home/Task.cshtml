@@ -11,8 +11,21 @@
         });
     });
 
+    $(document).ready(function () {
+        // Event listener for the Details button click
+        $('.editTaskButton').click(function (e) {
+            e.preventDefault();
+            $(".task-edit-container").toggle();
+        });
+
+
+        $('.commentsButton').click(function (e) {
+            e.preventDefault();
+            window.location.href = '/Home/Comments';
+        });
+    });
+
     function updateTaskStatus(taskId, newStatus) {
-        // Send an AJAX request to the server to update task status
         $.ajax({
             url: '@Url.Action("UpdateTaskStatus", "Home")',
             type: 'POST',
@@ -21,7 +34,6 @@
                 newStatus: newStatus
             },
             success: function (data) {
-                // Handle success
                 console.log("Task status updated successfully");
                 window.location.href = '@Url.Action("TodoLists", "Home")';
             },
@@ -50,7 +62,7 @@
             {
                 <div class="overdue-tag">Overdue</div>
             }
-            <div class="title">@task.Title</div>
+            <div class="title"> <span>@task.Title</span> </div>
             <div class="due"> Due: @task.DueDate.ToString("HH:mm")</div>
             <div class="actions">
                 <form method="post" action="@Url.Action("DeleteTask", "Home")">
@@ -63,36 +75,41 @@
                 <form method="post" action="@Url.Action("TodoLists", "Home")">
                     <button class="detailsButton" type="submit">Details</button>
                 </form>
+
+                <button class="CommentsButton" type="button" data-taskId="@task.Id" >Comments</button>
             </div>
-       
-            <div class="select">
-                <select class="mySelect" data-taskId="@task.Id" onchange="updateTaskStatus(@task.Id, this.value)">
+
+            <div class="select-container">
+                <select class="mySelect" tabindex="1" data-taskId="@task.Id" onchange="updateTaskStatus('@task.Id', this.value)">
                     @if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress))
                     {
-                        <option value="InProgress" selected>In progress</option>
-                        <option value="NotStarted">Not started</option>
-                        <option value="Completed">Completed</option>
+                        <option value="InProgress" selected><span>In progress</span></option>
+                        <option value="NotStarted"><span>Not started</span></option>
+                        <option value="Completed"><span>Completed</span></option>
                     }
                     else if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.NotStarted))
                     {
-                        <option value="InProgress">In progress</option>
-                        <option value="NotStarted" selected>Not started</option>
-                        <option value="Completed">Completed</option>
+                        <option value="InProgress"><span>In progress</span></option>
+                        <option value="NotStarted" selected><span>Not started</span></option>
+                        <option value="Completed"><span>Completed</span></option>
                     }
                     else if (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed))
                     {
-                        <option value="InProgress">In progress</option>
-                        <option value="NotStarted">Not started</option>
-                        <option value="Completed" selected>Completed</option>
+                        <option value="InProgress"><span>In progress</span></option>
+                        <option value="NotStarted"><span>Not started</span></option>
+                        <option value="Completed" selected><span>Completed</span></option>
                     }
                 </select>
             </div>
+
+
         </div>
 
         <div class="task-edit-container">
             @using (Html.BeginForm("EditTask", "Home", FormMethod.Post))
             {
                 @Html.Hidden("Id", task.Id)
+
                 <div class="edit-task-container">
                     <div class="form-group">
                         <label>Title:</label>
@@ -105,22 +122,26 @@
                         <input name="Description" class="form-control" value="@task.Description" required />
                         <span class="text-danger"></span>
                     </div>
+
                     <div class="form-group">
-                        <label>Due data:</label>
-                        <input name="Due" class="form-control" value="@task.DueDate" required />
+                        <label>Due Date:</label>
+                        <input name="DueDate" class="form-control" value="@task.DueDate" required />
                         <span class="text-danger"></span>
                     </div>
+
                     <div class="form-group">
                         <label>Tags:</label>
                         <input name="Tags" class="form-control" value="@task.Tags" required />
                         <span class="text-danger"></span>
                     </div>
+
                     <div class="editTaskButton">
                         <button type="submit" class="btn btn-primary">Update Task</button>
                     </div>
                 </div>
             }
         </div>
+
 
         <div class="task-details-container" style=" display: none;">
             <dic class="head"> Task Details: </dic>

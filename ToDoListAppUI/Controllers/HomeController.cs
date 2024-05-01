@@ -31,9 +31,27 @@ namespace TodoListApp.WebApp.Controllers
             return this.View();
         }
 
+        public async Task<IActionResult> Comments()
+        {
+            var tasks = await _taskWebApiService.GetTasks();
+            var taskModels = tasks.Select(task => new TaskModel
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                CreationDate = task.CreationDate,
+                DueDate = task.DueDate,
+                Status = (WebApi.Models.TaskStatus)task.Status,
+                Assignee = task.Assignee,
+                Tags = task.Tags,
+                Comments = task.Comments
+            });
+
+            return View(taskModels);
+        }
+
         public async Task<IActionResult> TodoLists(string searchString)
         {
-            // Get all todo lists
             var todoLists = await _todoListWebApiService.GetTodoLists();
 
             // Filter todo lists based on search string
@@ -150,10 +168,6 @@ namespace TodoListApp.WebApp.Controllers
         {
             try
             {
-                DateTime dueDate = DateTime.ParseExact(taskModel.DueDate.ToString("yyyy-MM-ddTHH:mm:ss"), "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
-                taskModel.DueDate = dueDate;
-                taskModel.Assignee = "me";
-                taskModel.Comments = string.Empty;
                 await _taskWebApiService.UpdateTask(taskModel);
 
                 return RedirectToAction("TodoLists");

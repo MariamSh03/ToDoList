@@ -1,0 +1,30 @@
+@model IEnumerable<TodoListApp.WebApi.Models.TaskModel>
+
+@if (Model != null)
+{
+    <div class="comments-container">
+        @foreach (var task in Model)
+        {
+            <div>
+                @if (task.Comments == null || string.IsNullOrEmpty(task.Comments))
+                {
+                    <div>No Comments for Task : @task.Title</div>
+                }
+                else
+                {
+                    <div>Comments for Task : @task.Title</div>
+                    <ul>
+                        @foreach (var comment in task.Comments.Split('.'))
+                        {
+                            <li>@comment</li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>No tasks available.</div>
+}
