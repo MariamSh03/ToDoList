@@ -31,10 +31,10 @@ namespace TodoListApp.WebApp.Controllers
             return this.View();
         }
 
-        public async Task<IActionResult> Comments()
+        public async Task<IActionResult> Comments(int taskId)
         {
-            var tasks = await _taskWebApiService.GetTasks();
-            var taskModels = tasks.Select(task => new TaskModel
+            var task = await _taskWebApiService.GetTaskById(taskId);
+            var taskModel = new TaskModel
             {
                 Id = task.Id,
                 Title = task.Title,
@@ -45,9 +45,9 @@ namespace TodoListApp.WebApp.Controllers
                 Assignee = task.Assignee,
                 Tags = task.Tags,
                 Comments = task.Comments
-            });
+            };
 
-            return View(taskModels);
+            return View(taskModel);
         }
 
         public async Task<IActionResult> TodoLists(string searchString)
@@ -126,7 +126,6 @@ namespace TodoListApp.WebApp.Controllers
                 taskModel.DueDate = dueDate;
                 taskModel.Assignee= listId.ToString();
                 taskModel.Comments = string.Empty;
-                // Call the service method to add the task
                 await _taskWebApiService.AddTask(taskModel, listId);
 
                 return RedirectToAction("TodoLists");

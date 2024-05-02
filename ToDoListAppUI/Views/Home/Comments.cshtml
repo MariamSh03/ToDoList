@@ -1,30 +1,43 @@
 @model IEnumerable<TodoListApp.WebApi.Models.TaskModel>
 
-@if (Model != null)
-{
-    <div class="comments-container">
-        @foreach (var task in Model)
-        {
-            <div>
-                @if (task.Comments == null || string.IsNullOrEmpty(task.Comments))
-                {
-                    <div>No Comments for Task : @task.Title</div>
-                }
-                else
-                {
-                    <div>Comments for Task : @task.Title</div>
-                    <ul>
-                        @foreach (var comment in task.Comments.Split('.'))
-                        {
-                            <li>@comment</li>
-                        }
-                    </ul>
-                }
-            </div>
-        }
-    </div>
+<head>
+    <link rel="stylesheet" href="~/css/Comments.css" />
+</head>
+
+@try{
+
+    @if (Model != null)
+    {
+        <div class="comments-container">
+            @foreach (var task in Model)
+            {
+                <div class="comment">
+                    @if (task.Comments == null || string.IsNullOrEmpty(task.Comments))
+                    {
+                        <div class="comment-header">No Comments for Task : @task.Title</div>
+                    }
+                    else
+                    {
+                        <div class="comment-header">Comments for Task : @task.Title</div>
+                        <ul class="comment-body">
+                            @foreach (var comment in task.Comments.Split('.'))
+                            {
+                                <li>@comment</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div>No tasks available.</div>
+    }
+
 }
-else
+catch(ArgumentException ex )
 {
     <div>No tasks available.</div>
+    <div> @ex </div>
 }

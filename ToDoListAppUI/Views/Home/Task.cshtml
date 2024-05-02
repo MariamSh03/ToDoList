@@ -9,7 +9,8 @@
     {
         <div class="Task-container" style="@(task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.Completed) ?
                         "background-color: 4CCD99;" : (task.Status.Equals(TodoListApp.WebApi.Models.TaskStatus.InProgress) ?
-                            "background-color: FFF455;" :  ((task.DueDate < DateTime.Today) ? "Background-color: F2613F;" : "Background-color: White;")))">
+                            "background-color: FFF455;" :  ((tas
+k.DueDate < DateTime.Today) ? "Background-color: F2613F;" : "Background-color: White;")))">
 
             <div class="title"> <span>@task.Title</span> </div>
             <div class="due"> Due: @task.DueDate.ToString("HH:mm")</div>

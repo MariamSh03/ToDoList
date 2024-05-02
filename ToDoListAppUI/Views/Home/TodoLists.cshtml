@@ -19,9 +19,10 @@
         });
 
         // Event listener for the Comments button click
-        $('.commentsButton').click(function (e) {
+        $('.CommentsButton').click(function (e) {
             e.preventDefault();
-            window.location.href = '/Home/Comments';
+            var taskId = $(this).data('taskId');
+            window.location.href = '/Home/Comments/' + taskId;
         });
 
         // Event listener for task status change
