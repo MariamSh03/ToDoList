@@ -31,10 +31,16 @@
             updateTaskStatus(taskId, newStatus);
         });
 
-        $('#addTaskButton0').click(function () {
-            $(this).hide();
-            $('.add-task-container').toggle();
+        $(document).on('click', '.addTaskButton', function () {
+            var todoListId = $(this).data('todo-list-id');
+            $('.add-task-container[data-todo-list-id="' + todoListId + '"]').toggle();
         });
+
+        $(document).on('click', '.editList', function (e) {
+            e.preventDefault();
+            $('.editTodo-Container').toggle();
+        });
+
 
         $('.add-Todobtn').click(function () {
             $('.add-todo-container').toggle();
@@ -110,13 +116,32 @@
                                 <input type="hidden" name="todoListId" value="@todoList.Id" />
                                 <button class="deletebtn" type="submit">Delete List</button>
                             </form>
-                            <form id="editButtonForm" method="post" asp-action="DeleteTodoList">
-                                <input type="hidden" name="todoListId" value="@todoList.Id" />
-                                <button class="editList" type="submit">Edit List</button>
-                            </form>
+
+                            <button class="editList" type="submit">Edit List</button>
+
                         </div> 
 
                     </div>
+
+                    <div class="editTodo-Container" style="display: none">
+                        @using (Html.BeginForm("EditList", "Home", FormMethod.Post))
+                        {
+                            <div class="edit-todo-container">
+                                <input type="hidden" name="Id" value="@todoList.Id">
+
+                                <div class="form-group">
+                                    <label>Title:</label>
+                                    <input name="newTitle" class="form-control" value="@todoList.Title" required />
+                                    <span class="text-danger"></span>
+                                </div>
+
+                                <div class="editTodoButton">
+                                    <button type="submit" class="btn btn-primary">Edit List</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
 
                     @if (string.IsNullOrEmpty(ViewBag.SearchString) || todoList.Tasks.Any(task => task.Title.Contains(ViewBag.SearchString)))
                     {
@@ -129,13 +154,16 @@
                         </div>
                     }
 
+                    <div class="addTaskBtn">
+                        <button class="addTaskButton btn btn-primary" data-todo-list-id="@todoList.Id">Add Task</button>
+                    </div>
+
                     <div class="addTask">
-                        <button id="addTaskButton0" class="btn btn-primary">Add Task</button>
                         @using (Html.BeginForm("AddTask", "Home", FormMethod.Post))
                         {
                             @Html.Hidden("todoListId", todoList.Id)
 
-                            <div class="add-task-container">
+                            <div class="add-task-container" data-todo-list-id="@todoList.Id" style="display: none;">
                                 <form method="post" asp-action="AddTask">
                                     <input type="hidden" name="listId" value="@todoList.Id">
 

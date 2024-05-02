@@ -57,11 +57,11 @@ namespace TodoListApp.WebApp.Controllers
             // Filter todo lists based on search string
             if (!string.IsNullOrEmpty(searchString))
             {
-                todoLists = todoLists.Where(t => t.Title.Contains(searchString) ||
-                                                  t.Tasks.Any(task => task.Title.Contains(searchString)));
+                var str = searchString.ToLowerInvariant();
+                todoLists = todoLists.Where(t => t.Title.ToLowerInvariant().Contains(str) ||
+                                                  t.Tasks.Any(task => task.Title.ToLowerInvariant().Contains(str)));
             }
 
-            // Map to ViewModel
             var todoListsModel = todoLists.Select(todoList => new TodoListModel
             {
                 Id = todoList.Id,
@@ -81,7 +81,6 @@ namespace TodoListApp.WebApp.Controllers
                 }).ToList(),
             }).ToList();
 
-            // Pass search string to the view
             ViewBag.SearchString = searchString;
 
             return View(todoListsModel);
@@ -160,6 +159,56 @@ namespace TodoListApp.WebApp.Controllers
             catch (ArgumentException ex)
             {
                 _logger.LogError($"An error occurred while adding a new TodoLIst: {ex.Message}");
+                return RedirectToAction("Error");
+            }
+        }
+
+        public async Task<IActionResult> EditList(TodoListModel todo, string newTitle)
+        {
+            if (todo == null)
+            {
+                return BadRequest("TodoListModel is null");
+            }
+
+            if (string.IsNullOrEmpty(newTitle))
+            {
+                return BadRequest("New title is null or empty");
+            }
+
+            if (todo.Tasks == null)
+            {
+                return BadRequest("TodoListModel.Tasks is null");
+            }
+
+            var todolist = new TodoList()
+            {
+                Id = todo.Id,
+                Title = newTitle,
+                Description = todo.Description,
+                Tasks = todo.Tasks.Select(task => new TodoListApp.Services.Task
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    CreationDate = task.CreationDate,
+                    DueDate = task.DueDate,
+                    Status = (Services.TaskStatus)task.Status,
+                    Assignee = task.Assignee,
+                    Tags = task.Tags,
+                    Comments = task.Comments
+                }).ToList(),
+            };
+
+            try
+            {
+                await _todoListWebApiService.UpdateTodoList(todolist);
+
+                return RedirectToAction("TodoLists");
+
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError($"An error occurred while updating the TodoList: {ex.Message}");
                 return RedirectToAction("Error");
             }
         }

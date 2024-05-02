@@ -36,12 +36,7 @@
 
 }
 
-.mySelect {
-    width: 100%;
-    border-radius: 5px;
-    height: 80%;
-    margin-top: 5px;
-}
+
 
 .Delete, .editTaskButton, .detailsButton, .CommentsButton {
     width: 80px;
@@ -134,47 +129,62 @@
 }
 /**/
 
-.select-container{
+.select-container {
     display: flex;
     align-items: center;
+    max-width: 100px;
 }
 
 .mySelect {
-    display: flex;
-    flex-direction: column;
-    position: relative;
     width: 150px;
-    height: 40px;
-    border: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 1px 1px 3px gray;
-    transition: 200ms;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
 }
 
-.option {
-    padding: 0 30px 0 10px;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    background: #333;
-    border-top: #222 solid 1px;
+.mySelect:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.mySelect option {
+    padding: 8px;
+}
+
+/* Style the selected option */
+.mySelect option:checked {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Style the dropdown arrow */
+.mySelect:after {
+    content: '\25BC';
     position: absolute;
-    top: 0;
-    width: 100%;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
     pointer-events: none;
-    order: 2;
-    z-index: 1;
-    transition: background .4s ease-in-out;
-    box-sizing: border-box;
-    overflow: hidden;
-    white-space: nowrap;
 }
 
-.option:hover {
-    background: #666;
+/* Style on focus */
+.mySelect:focus + .mySelect::after {
+    color: #007bff;
 }
 
-.select:focus .option {
-    position: relative;
-    pointer-events: all;
+.mySelect option[value="InProgress"]:hover {
+    background-color: #FFD700; /* Lighter Yellow */
+}
+
+.mySelect option[value="NotStarted"]:hover {
+    background-color: #5EAEFF; /* Lighter Blue */
+}
+
+.mySelect option[value="Completed"]:hover {
+    background-color: #64FF64; /* Lighter Green */
 }

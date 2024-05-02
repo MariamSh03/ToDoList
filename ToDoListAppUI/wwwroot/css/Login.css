@@ -105,14 +105,14 @@ h1 {
     -o-transition: all 0.1s ease-in-out;
 }
 
-    .login-container form button:hover {
-        box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
-        transform: scale(1.02);
-        -webkit-transform: scale(1.02);
-        -moz-transform: scale(1.02);
-        -ms-transform: scale(1.02);
-        -o-transform: scale(1.02);
-    }
+.login-container form button:hover {
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+    -o-transform: scale(1.02);
+}
 
 .circle {
     width: 8rem;

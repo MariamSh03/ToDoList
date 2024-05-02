@@ -148,6 +148,12 @@ button.add-Todobtn:hover {
     justify-content: center;
 }
 
+.addTaskBtn{
+    display:flex;
+    justify-content:center;
+    margin-top: 20px;
+}
+
 .add-task-container {
     display: none;
     margin-top: 30px;
