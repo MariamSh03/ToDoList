@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # To-do List Application
 
 In this project, you must design and develop a web application according to the requirements that are specified in the task description.
@@ -72,3 +73,6 @@ The [delivery plan](delivery-plan.md) contains the list of technical tasks distr
 ## Project Evaluation
 
 The project is evaluated using both technical evaluation criteria and an assessment of the scope and quality of the implementation of user stories. Both technical evaluation criteria and criteria for user stories are described in [Project Evaluation](project-evaluation.md) document.
+=======
+# MyTodoList
+>>>>>>> 7ef5bffb9fbc4018966fe0f8d5d96095a0b27d24
